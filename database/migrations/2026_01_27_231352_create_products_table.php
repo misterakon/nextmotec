@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            
+
+           $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+
             $table->string('name', 255);
-            $table->enum('category', ['logiciel', 'formation', 'template', 'assistance']);
-            $table->decimal('price', 10, 2)->default(0); // 0 = Sur devis
+            $table->decimal('price', 10, 2)->default(0); 
             $table->text('short_desc')->nullable();
             $table->longText('long_desc')->nullable();
-            // Lien du fichier si produit numérique
-            $table->string('download_link', 255)->nullable();
+            // $table->string('download_link', 255)->nullable();
             $table->boolean('active')->default(true);
 
             $table->timestamps();

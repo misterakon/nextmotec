@@ -14,17 +14,16 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             
+            $table->foreignId('customer_id')
+                ->nullable()
+                ->constrained('customers')
+                ->nullOnDelete();
+
             // ID généré pour CinetPay
             $table->string('transaction_id', 100)->unique();
-
-            $table->string('customer_email', 255)->nullable();
-            $table->string('customer_phone', 50)->nullable();
-
             $table->decimal('total_amount', 10, 2);
-
             $table->enum('payment_status', ['pending', 'accepted', 'failed'])
                   ->default('pending');
-
             // Orange Money, Wave, etc.
             $table->string('payment_method', 50)->nullable();
 
