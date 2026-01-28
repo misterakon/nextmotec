@@ -10,8 +10,9 @@
     </footer>
     <!-- FOOTER SECTION END -->
 
-
     <!-- js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="{{ asset('public/frontend/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('public/frontend/assets/vendor/fslightbox/fslightbox.js') }}"></script>
     <script src="{{ asset('public/frontend/assets/vendor/mixitup/mixitup.min.js') }}"></script>
