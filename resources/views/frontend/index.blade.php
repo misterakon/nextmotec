@@ -65,7 +65,7 @@
 
                     <!-- course footer -->
                     <div class="flex flex-wrap gap-x-[20px] gap-y-[15px] justify-between items-center border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
-                        <button class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
+                        <button onclick="open_form()" class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
                             <span>Voir les détails</span>
                             <i class="fa-solid fa-arrow-right-long"></i>
                         </button>
@@ -107,7 +107,7 @@
 
                     <!-- course footer -->
                     <div class="flex flex-wrap gap-x-[20px] gap-y-[15px] justify-between items-center border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
-                        <button class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
+                        <button onclick="open_form()" class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
                             <span>Voir les détails</span>
                             <i class="fa-solid fa-arrow-right-long"></i>
                         </button>
@@ -149,7 +149,7 @@
 
                     <!-- course footer -->
                     <div class="flex flex-wrap gap-x-[20px] gap-y-[15px] justify-between items-center border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
-                        <button class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
+                        <button onclick="open_form()" class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
                             <span>Voir les détails</span>
                             <i class="fa-solid fa-arrow-right-long"></i>
                         </button>
@@ -161,10 +161,6 @@
                     <!-- course image  -->
                     <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
                         <img src="{{ asset('public/frontend/assets/img/course-4.jpg') }}" alt="Course Image" class="aspect-[330/223] w-full object-cover group-hover:scale-110">
-                        {{-- <span class="absolute bg-edyellow px-[10px] h-[33px] flex gap-[8px] items-center top-[16px] left-[16px] rounded-[6px]">
-                            <span class="icon"><img src="{{ asset('public/frontend/assets/img/icon/clock.svg') }}" alt="icon"></span>
-                            <span class="txt">8h 30m</span>
-                        </span> --}}
                     </div>
 
                     <!-- course infos -->
@@ -191,7 +187,7 @@
 
                     <!-- course footer -->
                     <div class="flex flex-wrap gap-x-[20px] gap-y-[15px] justify-between items-center border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
-                        <button class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
+                        <button onclick="open_form()" class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
                             <span>Voir les détails</span>
                             <i class="fa-solid fa-arrow-right-long"></i>
                         </button>
@@ -595,5 +591,8 @@
     <a href="https://wa.me/22501020304" target="_blank" class="float" title="Contactez-nous via WhatsApp">
         <i class="fa-brands fa-whatsapp fa-2x"></i>
     </a>
+
+    @include('frontend.modal_description')
+    @include('frontend.layout.script')
 
 @endsection
