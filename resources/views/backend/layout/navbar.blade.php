@@ -514,10 +514,16 @@
             </li>
             <li>
                 <div class="d-grid px-2 pt-2 pb-1">
-                <a class="btn btn-sm btn-danger d-flex" href="auth-login-cover.html" target="_blank">
+                {{-- <a class="btn btn-sm btn-danger d-flex" href="{{ route('logout') }}" target="_blank">
                     <small class="align-middle">Logout</small>
                     <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
-                </a>
+                </a> --}}
+                <a class="btn btn-sm btn-danger d-flex" href="{{ route('logout') }}" target="_blank">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="btn dropdown-item">Deconnexion</button>
+                </form>
+                 </a>
                 </div>
             </li>
             </ul>

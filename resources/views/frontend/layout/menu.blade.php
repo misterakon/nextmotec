@@ -5,6 +5,7 @@
         <li><a href="about.html"><b>TEMPLATES</b></a></li>
         <li><a href="about.html"><b>GUIDE D'ACHAT</b></a></li>
         <li><a href="about.html"><b>TEMOIGNAGES</b></a></li>
+        <li><a href="{{route('login')}}"><b>SE CONNECTER</b></a></li>
         
         {{-- <li class="has-sub-menu relative">
             <a role="button">Accueil</a>
