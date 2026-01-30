@@ -43,69 +43,56 @@
 
             <!-- course cards -->
             <div class="ed-2-courses-container grid grid-cols-4 xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-[30px] xxl:gap-[20px]">
-                <div class="flex flex-col gap-[80px]">
-                    @foreach($categories as $category)
-                        @if($category->products->count())
-                            {{-- <hr style="border: none; margin-top: 20px; margin-bottom: 20px;"> --}}
-                            {{-- Titre catégorie --}}
-                            <h2 id="{{ $category->slug }}" class="text-center font-bold text-[28px] mb-[20px] mt-[40px]">
-                                {{ $categoryTitles[strtolower($category->name)] ?? ucfirst($category->name) }}
-                            </h2>
+               
+                @foreach($products as $product)
+                        <div class="ed-2-single-course mix promoteur border border-[#e5e5e5] rounded-[10px] p-[20px] group">
 
-                            {{-- Grille : ici tu gardes ton template original --}}
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[30px]">
+                            <!-- image -->
+                            <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
+                                <img
+                                    src="{{ $product->download_link 
+                                            ? asset('storage/'.$product->download_link) 
+                                            : asset('public/frontend/assets/img/course-1.jpg') }}"
+                                    alt="{{ $product->name }}"
+                                    class="aspect-[330/223] w-full object-cover group-hover:scale-110 transition"
+                                >
+                            </div>
 
-                                @foreach($category->products as $product)
-                                <div class="ed-2-single-course mix promoteur border border-[#e5e5e5] rounded-[10px] p-[20px] group">
-                                    <!-- course image  -->
-                                    <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
-                                        <img src="{{ asset('public/frontend/assets/img/course-1.jpg') }}"
-                                            alt="{{ $product->name }}"
-                                            class="aspect-[330/223] w-full object-cover group-hover:scale-110">
-                                    </div>
+                            <!-- infos -->
+                            <div class="flex justify-between items-center mb-[16px]">
+                                <span class="inline-flex items-center justify-center border border-[#e5e5e5] px-[10px] h-[33px] rounded-[6px] font-medium text-[#808080] text-[14px]">
+                                    {{ ucfirst($product->category->name) }}
+                                </span>
 
-                                    <!-- course infos -->
-                                    <div class="flex justify-between items-center mb-[16px]">
-                                        <span class="inline-flex items-center justify-center border border-[#e5e5e5] px-[10px] h-[33px] rounded-[6px] font-medium text-[#808080] text-[14px]">
-                                            {{ ucfirst($category->name) }}
-                                        </span>
+                                <span class="text-edpurple font-semibold text-[20px]">
+                                    {{ $product->price > 0 
+                                        ? number_format($product->price, 0, ',', ' ') . ' FCFA'
+                                        : 'Sur devis' }}
+                                </span>
+                            </div>
 
-                                        <span class="text-edpurple font-semibold text-[20px]">
-                                            {{ $product->price > 0
-                                                ? number_format($product->price, 0, ',', ' ') . ' FCFA'
-                                                : 'Sur Devis' }}
-                                        </span>
-                                    </div>
+                            <!-- title -->
+                            <h5 class="font-semibold text-[20px] text-edblue mb-[23px]">
+                                <a href="" class="hover:text-edpurple">
+                                    {{ $product->name }}
+                                </a>
+                            </h5>
 
-                                    <!-- course title -->
-                                    <h5 class="font-semibold text-[20px] text-edblue mb-[23px]">
-                                        <a href="#"
-                                        class="hover:text-edpurple">
-                                            {{ $product->name }}
-                                        </a>
-                                    </h5>
-
-                                    <!-- course footer -->
-                                    <div class="flex flex-wrap gap-x-[20px] gap-y-[15px] justify-between items-center border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
-                                        <button type="button"
-                                                onclick="openProductModal({{ $product->id }})"
-                                                class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
-                                            <span>Voir les détails</span>
-                                            <i class="fa-solid fa-arrow-right-long"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            @endforeach
+                            <!-- footer -->
+                            <div class="flex flex-wrap gap-x-[20px] gap-y-[15px] justify-between items-center border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
+                                <button
+                                    type="button"
+                                    class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple transition"
+                                    onclick="openProductModal({{ $product->id }})"
+                                    >
+                                        <span>Voir les détails</span>
+                                        <i class="fa-solid fa-arrow-right-long"></i>
+                                </button>
 
                             </div>
 
-                        @endif
-
-                    @endforeach
-
-                    {{-- Container si tu utilises la 1ère méthode (HTML modal injectée) --}}
-                    <div id="modal-container"></div>
-                </div>
+                        </div>
+                    @endforeach             
             </div>
         </div>
     </section>

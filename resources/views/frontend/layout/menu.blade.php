@@ -1,10 +1,10 @@
 <div class="ed-header-nav-container">
     <ul class="to-go-to-sidebar-in-mobile ed-header-nav flex lg:flex-col gap-x-[43px] xl:gap-x-[33px] font-kanit text-[17px] font-normal">
-        <li><a href="about.html"><b>LOGICIELS</b></a></li>
-        <li><a href="about.html"><b>FORMATION</b></a></li>
-        <li><a href="about.html"><b>TEMPLATES</b></a></li>
-        <li><a href="about.html"><b>GUIDE D'ACHAT</b></a></li>
-        <li><a href="about.html"><b>TEMOIGNAGES</b></a></li>
+        <li><a href="#logiciel"><b>LOGICIELS</b></a></li>
+        <li><a href="#formation"><b>FORMATION</b></a></li>
+        <li><a href="#template"><b>TEMPLATES</b></a></li>
+        <li><a href="#guide-achat"><b>GUIDE D'ACHAT</b></a></li>
+        <li><a href="#temoignage"><b>TEMOIGNAGES</b></a></li>
         
         {{-- <li class="has-sub-menu relative">
             <a role="button">Accueil</a>
