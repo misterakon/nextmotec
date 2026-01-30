@@ -1,20 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\backend\dashboard\Crm;
-use App\Http\Controllers\backend\dashboard\Analytics;
-use App\Http\Controllers\backend\language\LanguageController;
 
 Route::get('/', function () {
     return view('frontend.index');
 });
 
+Route::get('/dashboard', function () {
+    return view('backend.dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// BACKEND
-// Main Page Route
-// Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
-Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
-Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// locale
-//Route::get('/lang/{locale}', [LanguageController::class, 'swap']);
+require __DIR__.'/auth.php';
