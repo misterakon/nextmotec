@@ -21,7 +21,7 @@ Route::get('/products/{product}/modal', [ProductController::class, 'modal'])
     ->name('products.modal');
 // BACKEND
 // Main Page Route
-// Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
+Route::get('/login', [Login::class, 'index'])->name('dashboard-analytics');
 Route::get('/dashboard/analytics', [Analytics::class, 'index'])->name('dashboard-analytics');
 Route::get('/dashboard/crm', [Crm::class, 'index'])->name('dashboard-crm');
 

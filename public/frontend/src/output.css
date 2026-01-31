@@ -65,6 +65,9 @@ body {
   margin: 0;
   /* 1 */
   line-height: inherit;
+  
+  max-width: 100%;
+  overflow-x: hidden;
   /* 2 */
 }
 
