@@ -1022,8 +1022,8 @@ video {
 }
 
 .mx-\[9\.2\%\] {
-  margin-left: 9.2%;
-  margin-right: 9.2%;
+  margin-left: 14.2%;
+  margin-right: 14.2%;
 }
 
 .mx-auto {
@@ -3871,7 +3871,7 @@ video {
 
 .py-\[120px\] {
   padding-top: 80px;
-  padding-bottom: 90px;
+  padding-bottom: 30px;
 }
 
 .py-\[12px\] {
@@ -6138,8 +6138,8 @@ video {
   }
 
   .xxxl\:mx-\[8\.2\%\] {
-    margin-left: 8.2%;
-    margin-right: 8.2%;
+    margin-left: 12.2%;
+    margin-right: 12.2%;
   }
 
   .xxxl\:mx-\[9\.8\%\] {

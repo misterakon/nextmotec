@@ -4,7 +4,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Alerte Foncier - @yield('titre')</title>
+    <title>ADMIN - NEXMOTEC</title>
 
     <meta name="description" content="" />
 
@@ -35,15 +35,9 @@
     <!-- Vendors CSS -->
 
     <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-
     <!-- endbuild -->
 
-    <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
-    <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}" />
-
-    <!-- Page CSS -->
+    @yield('css')
 
     <!-- Helpers -->
     <script src="{{ asset('public/backend/assets/vendor/js/helpers.js') }}"></script>

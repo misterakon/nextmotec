@@ -1,6 +1,12 @@
 @extends('backend.layout.master')
 @section('title', 'Tableau de bord')
 
+@section('css')
+  <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+  <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
+  <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
+  <link rel="stylesheet" href="{{ asset('public/backend/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}" />
+@endsection
 
 @section('main-content')
 
@@ -515,4 +521,18 @@
     </div>
   </div>
 
+@endsection
+
+@section('fichier_js')
+  <!-- Vendors JS -->
+  <script src="{{ asset('public/backend/assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+  <script src="{{ asset('public/backend/assets/vendor/libs/swiper/swiper.js') }}"></script>
+  <script src="{{ asset('public/backend/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+
+  <!-- Main JS -->
+
+  <script src="{{ asset('public/backend/assets/js/main.js') }}"></script>
+
+  <!-- Page JS -->
+  <script src="{{ asset('public/backend/assets/js/app-ecommerce-dashboard.js') }}"></script>
 @endsection
