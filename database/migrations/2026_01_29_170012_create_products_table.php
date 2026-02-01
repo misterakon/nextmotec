@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
 
            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+           $table->foreignId('customer_type_id')->constrained('customer_types')->cascadeOnDelete();
 
             $table->string('name', 255);
             $table->decimal('price', 10, 2)->default(0); 
             $table->text('short_desc')->nullable();
             $table->longText('long_desc')->nullable();
-            // $table->string('download_link', 255)->nullable();
+            $table->string('download_link', 255)->nullable();
             $table->boolean('active')->default(true);
 
             $table->timestamps();

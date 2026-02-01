@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Documentation extends Model
 {
     protected $fillable = [
+        'product_id',
         'title',
+        'type',
+        'url',
         'content',
-        'author_id',
-        'published_at',
-    ];
+        'active',
+];
 
-    protected $casts = [
-        'published_at' => 'datetime',
+   protected $casts = [
+        'active' => 'boolean',
     ];
 
     public function product()
