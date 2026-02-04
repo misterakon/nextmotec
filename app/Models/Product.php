@@ -48,6 +48,11 @@ class Product extends Model
         return $this->hasMany(Documentation::class);
     }
 
+    public function subscriptionTypes()
+    {
+        return $this->hasMany(SubscriptionType::class);
+    }
+
     
 
 }

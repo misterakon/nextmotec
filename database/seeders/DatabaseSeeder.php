@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CustomerTypeSeeder::class,
             FeatureSeeder::class,
             DocumentationSeeder::class,
+            SubscriptionTypeSeeder::class,
         ]);
         // User::factory(10)->create();
 

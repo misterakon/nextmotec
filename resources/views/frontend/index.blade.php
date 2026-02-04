@@ -31,67 +31,80 @@
                     </button>
                 @endforeach
             </div>
+            <div class="ed-2-courses-container">
+                <div class="flex flex-col gap-[48px]">
+                    @foreach($categories as $category)
 
-            @foreach($categories as $category)
-
-                {{-- CATEGORIE --}}
-                <div id="{{ $category->slug }}" class="max-w-[370px] md:max-w-full shrink-0" >
-                    <h4 class="ed-section-sub-title fw-bold" style="color:#000">{{ $categoryTitles[strtolower($category->name)] ?? ucfirst($category->name) }}</h4>
-                </div>
-
-                <!-- GRID CARDS PRODUCTS -->
-                <div class="ed-2-courses-container grid grid-cols-3 xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-[30px] xxl:gap-[20px] {{ !$loop->last ? 'mb-[2]' : '' }}" id="MixItUp084454">
-                    
-                    @foreach($category->products as $product)
-
-                        {{-- PRODUITS --}}
-                        <div class="ed-2-single-course mix {{ $product->customerType->slug }} border border-[#e5e5e5] rounded-[10px] p-[20px] group">
-
-                            <!-- image -->
-                            <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
-                                <img src="{{ $product->image
-                                    ? asset('storage/app/public/'.$product->image)
-                                    : asset('public/frontend/assets/img/course-1.jpg') }}"
-                                    alt="{{ $product->name }}"
-                                    class="aspect-[330/223] w-full object-cover group-hover:scale-110">
-                            </div>
-
-                            <!-- infos -->
-                            <div class="flex justify-between items-center mb-[16px]">
-                                <span class="inline-flex items-center justify-center border border-[#e5e5e5]
-                                            px-[10px] h-[33px] rounded-[6px] font-medium text-[#808080] text-[14px]">
-                                    {{ ucfirst($category->name) }}
-                                </span>
-
-                                <span class="text-edpurple font-semibold text-[20px] fw-bold" style="color:#1a474a">
-                                    {{ $product->price > 0
-                                        ? number_format($product->price, 0, ',', ' ') . ' FCFA'
-                                        : 'Sur devis' }}
-                                </span>
-                            </div>
-
-                            <!-- title -->
-                            <h5 class="font-semibold text-[20px] text-edblue mb-[23px]">
-                                {{ $product->name }}
-                            </h5>
-
-                            <!-- footer -->
-                            <div class="border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
-                                <button onclick="open_form({{ $product->id }})"
-                                        class="h-[50px] px-[22px] border border-edpurple rounded-[8px]
-                                            flex gap-[8px] items-center justify-center
-                                            hover:bg-edpurple hover:text-white">
-                                    <span>Voir les détails</span>
-                                    <i class="fa-solid fa-arrow-right-long"></i>
-                                </button>
-                            </div>
-
+                        {{-- CATEGORIE --}}
+                        <div id="{{ $category->slug }}" class="max-w-[370px] md:max-w-full shrink-0" >
+                            <h4 class="ed-section-sub-title fw-bold" style="color:#000">{{ $categoryTitles[strtolower($category->name)] ?? ucfirst($category->name) }}</h4>
                         </div>
 
+                        <!-- GRID CARDS PRODUCTS -->
+                        <div class="ed-2-courses-container grid grid-cols-3 xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-[30px] xxl:gap-[20px] {{ !$loop->last ? 'mb-[2]' : '' }}" id="MixItUp084454">
+                            
+                            @foreach($category->products as $product)
+
+                                {{-- PRODUITS --}}
+                                <div class="ed-2-single-course mix {{ $product->customerType->slug }} border border-[#e5e5e5] rounded-[10px] p-[20px] group">
+
+                                    <!-- image -->
+                                    <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
+                                        <img src="{{ $product->image
+                                            ? asset('storage/app/public/'.$product->image)
+                                            : asset('public/frontend/assets/img/course-1.jpg') }}"
+                                            alt="{{ $product->name }}"
+                                            class="aspect-[330/223] w-full object-cover group-hover:scale-110">
+                                    </div>
+
+                                    <!-- infos -->
+                                    <div class="flex justify-between items-center mb-[16px]">
+                                        <span class="inline-flex items-center justify-center border border-[#e5e5e5]
+                                                    px-[10px] h-[33px] rounded-[6px] font-medium text-[#808080] text-[14px]">
+                                            {{ ucfirst($category->name) }}
+                                        </span>
+
+                                        {{-- <span class="text-edpurple font-semibold text-[20px] fw-bold" style="color:#1a474a">
+                                            {{ $product->price > 0
+                                                ? number_format($product->price, 0, ',', ' ') . ' FCFA'
+                                                : 'Sur devis' }}
+                                        </span> --}}
+                                        @php
+                                        $minPrice = $product->subscriptionTypes->min('price');
+                                        @endphp
+
+                                        <span class="text-edpurple font-semibold text-[20px] fw-bold" style="color:#1a474a">
+                                        {{ $minPrice && $minPrice > 0
+                                            ? number_format($minPrice, 0, ',', ' ') . ' FCFA'
+                                            : 'Sur devis' }}
+                                        </span>
+
+                                    </div>
+
+                                    <!-- title -->
+                                    <h5 class="font-semibold text-[20px] text-edblue mb-[23px]">
+                                        {{ $product->name }}
+                                    </h5>
+
+                                    <!-- footer -->
+                                    <div class="border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
+                                        <button onclick="open_form({{ $product->id }})"
+                                                class="h-[50px] px-[22px] border border-edpurple rounded-[8px]
+                                                    flex gap-[8px] items-center justify-center
+                                                    hover:bg-edpurple hover:text-white">
+                                            <span>Voir les détails</span>
+                                            <i class="fa-solid fa-arrow-right-long"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            @endforeach
+                            
+                        </div><br><br>
                     @endforeach
-                    
-                </div><br><br>
-            @endforeach
+                </div>
+            </div>
 
         </div>
     </section>

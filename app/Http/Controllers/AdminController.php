@@ -7,6 +7,8 @@ use App\Models\Category;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use App\Models\CustomerType;
+use App\Models\Feature;
+use App\Models\SubscriptionType;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -254,7 +256,7 @@ class AdminController extends Controller
 
     public function get_produit($id)
     {
-        $produit = Product::with(['features', 'documentations'])->findOrFail($id);
+        $produit = Product::with(['features', 'documentations', 'subscriptionTypes','category'])->findOrFail($id);
 
         if ($produit) {
             return response()->json($produit);

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2)->default(0); 
             $table->text('short_desc')->nullable();
             $table->longText('long_desc')->nullable();
-            $table->string('download_link', 255)->nullable();
+            $table->string('image', 255)->nullable();
             $table->boolean('active')->default(true);
 
             $table->timestamps();
