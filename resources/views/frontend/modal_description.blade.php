@@ -60,16 +60,6 @@
           <div class="tab-pane fade" id="tab4">
             <div class="card border rounded">
               <div class="card-body">
-                {{-- <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h5 id="modal-category" class="mb-0 fw-bold"></h5>
-                  <span id="modal-price" class="fw-bold text-success fs-5"></span>
-                </div>
-
-                <ul class="mb-0">
-                  <li>Accès au produit</li>
-                  <li>Support technique</li>
-                  <li>Mises à jour</li>
-                </ul> --}}
                 <div id="modal-offers"></div>
               </div>
             </div>

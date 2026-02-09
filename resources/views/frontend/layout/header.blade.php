@@ -99,7 +99,10 @@
                         </svg>
 
                         <!-- Badge notification -->
-                        <span class="ed-cart-badge">3</span>
+                        {{-- <span class="ed-cart-badge">3</span> --}}
+                        <span class="ed-cart-badge" id="cart-badge-count">
+                            {{ collect(session('cart', []))->sum('qty') }}
+                        </span>
                     </button>
 
 

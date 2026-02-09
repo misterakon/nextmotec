@@ -3,6 +3,8 @@
 
 <head>
     @include('frontend.layout.head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 {{-- <script>
@@ -122,9 +124,9 @@
     }
 </script>
 
-<script>
+{{-- <script>
   window.PRODUCT_MODAL_URL = @json(route('products.modal', ['product' => '__ID__']));
-</script>
+</script> --}}
 
 
 

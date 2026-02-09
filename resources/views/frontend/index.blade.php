@@ -51,7 +51,7 @@
                                     <!-- image -->
                                     <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
                                         <img src="{{ $product->image
-                                            ? asset('storage/app/public/'.$product->image)
+                                            ? asset('storage/app/public/products/'.$product->image)
                                             : asset('public/frontend/assets/img/course-1.jpg') }}"
                                             alt="{{ $product->name }}"
                                             class="aspect-[330/223] w-full object-cover group-hover:scale-110">
@@ -295,6 +295,7 @@
 
     @include('frontend.modal_description')
     @include('frontend.layout.script')
+    @include('frontend.layout.cart')
 
     <div id="modal-container"></div>
 

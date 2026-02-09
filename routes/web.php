@@ -7,6 +7,7 @@ use App\Http\Controllers\backend\dashboard\Crm;
 use App\Http\Controllers\frontend\ProductController;
 use App\Http\Controllers\backend\dashboard\Analytics;
 use App\Http\Controllers\backend\language\LanguageController;
+use App\Http\Controllers\CartController;
 
 // Route::get('/', function () {
 //     return view('frontend.index');
@@ -15,12 +16,12 @@ use App\Http\Controllers\backend\language\LanguageController;
 Route::get('/', [ProductController::class, 'index'])
     ->name('products.index');
 
-// Route::get('/products/{product}/details', [ProductController::class, 'details'])
-//     ->name('products.details');
+// // Route::get('/products/{product}/details', [ProductController::class, 'details'])
+// //     ->name('products.details');
 
-// Route AJAX pour récupérer le modal rempli
-Route::get('/products/{product}/modal', [ProductController::class, 'modal'])
-    ->name('products.modal');
+// // Route AJAX pour récupérer le modal rempli
+// Route::get('/products/{product}/modal', [ProductController::class, 'modal'])
+//     ->name('products.modal');
 
     ///////////////////////////////////
 ////////////// BACKEND ///////////////////////
@@ -49,7 +50,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/produit/{id}', [AdminController::class, 'delete_produit'])->name('prod.delete_produit');
 
 });
-    Route::get('/produit/{id}', [AdminController::class, 'get_produit'])->name('prod.get_produit');
+
+Route::get('/produit/{id}', [AdminController::class, 'get_produit'])->name('prod.get_produit');
+
+// Pour la gestion du panier
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/cart', [CartController::class, 'get'])->name('cart.get');
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index'); // placeholder
+
 
 
 require __DIR__.'/auth.php';
