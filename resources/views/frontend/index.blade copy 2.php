@@ -33,18 +33,18 @@
             </div>
 
             @foreach($categories as $category)
-
-                {{-- CATEGORIE --}}
-                <div id="{{ $category->slug }}" class="max-w-[370px] md:max-w-full shrink-0" >
-                    <h4 class="ed-section-sub-title fw-bold" style="color:#000">{{ $categoryTitles[strtolower($category->name)] ?? ucfirst($category->name) }}</h4>
+                
+                <div id="{{ $category->slug }}" class="max-w-[370px] md:max-w-full shrink-0">
+                    <h6 class="ed-section-sub-title">{{ $categoryTitles[strtolower($category->name)] ?? ucfirst($category->name) }}</h6>
                 </div>
 
-                <!-- GRID CARDS PRODUCTS -->
-                <div class="ed-2-courses-container grid grid-cols-3 xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-[30px] xxl:gap-[20px] {{ !$loop->last ? 'mb-[2]' : '' }}" id="MixItUp084454">
+                <!-- course cards -->
+                <div class="ed-2-courses-container grid grid-cols-4 xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-[30px] xxl:gap-[20px]" id="MixItUp084454">
                     
                     @foreach($category->products as $product)
 
-                        {{-- PRODUITS --}}
+                    
+
                         <div class="ed-2-single-course mix {{ $product->customerType->slug }} border border-[#e5e5e5] rounded-[10px] p-[20px] group">
 
                             <!-- image -->
@@ -63,7 +63,7 @@
                                     {{ ucfirst($category->name) }}
                                 </span>
 
-                                <span class="text-edpurple font-semibold text-[20px] fw-bold" style="color:#1a474a">
+                                <span class="text-edpurple font-semibold text-[20px]">
                                     {{ $product->price > 0
                                         ? number_format($product->price, 0, ',', ' ') . ' FCFA'
                                         : 'Sur devis' }}
@@ -77,7 +77,7 @@
 
                             <!-- footer -->
                             <div class="border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
-                                <button onclick="open_form({{ $product->id }})"
+                                <button onclick="openProductModal({{ $product->id }})"
                                         class="h-[50px] px-[22px] border border-edpurple rounded-[8px]
                                             flex gap-[8px] items-center justify-center
                                             hover:bg-edpurple hover:text-white">
@@ -92,10 +92,114 @@
                     
                 </div><br><br>
             @endforeach
-
         </div>
     </section>
 
+    <!-- COURSES SECTION START -->
+    <section class="ed-2-courses py-[120px] xl:py-[80px] md:py-[60px]" style="margin-top: 6%">
+        <div class="mx-[9.2%] xxxl:mx-[8.2%] xxl:mx-[3%]">
+            <!-- section heading -->
+            <div class="text-center mb-[21px]">
+                <h1 class="ed-section-title" style="color: #1A474A">Votre Partenaire Stratégique en Immobilier</h1>
+                <p style="font-size:18px; color: #4d4d4d">Des solutions logicielles et des formations conçues pour les professionnels qui façonnent<br> l'immobilier de demain en Afrique de l'Ouest.</p>
+            </div>
+            <br><br>
+            <div class="text-center mb-[21px]">
+                {{-- <h6 class="ed-section-sub-title">Nos solutions</h6> --}}
+                {{-- <h2 class="ed-section-title">Trouvez la solution adaptée à votre métier</h2> --}}
+                <h1 class="font-bold text-center">Trouvez la solution adaptée à votre métier</h1>
+                <p style="font-size:16px; color: #4d4d4d">Sélectionnez votre profil pour découvrir les outils et formations que nous avons conçus pour vous.</p>
+            </div>
+
+            
+            <div class="ed-2-courses-filter-navs flex flex-wrap justify-center gap-[10px] mb-[40px] pb-[30px] border-b border-[#002147]/15 mx-[200px] lg:mx-[100px] md:mx-[12px]
+                    *:border *:border-edpurple *:rounded-[6px] *:py-[5px] *:px-[10px] *:text-edpurple *:font-medium *:text-[14px]">
+
+                <!-- Tous -->
+                <button class="hover:bg-edpurple hover:text-white active" data-filter="all">
+                    Tous
+                </button>
+
+                <!-- Customer types dynamiques -->
+                @foreach($customertypes as $type)
+                    <button
+                        class="hover:bg-edpurple hover:text-white"
+                        data-filter=".{{ $type->slug }}">
+                        {{ ucfirst($type->name) }}
+                    </button>
+                @endforeach
+            </div>
+
+
+            <!-- course cards -->
+            <div class="ed-2-courses-container grid grid-cols-4 xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-[30px] xxl:gap-[20px]">
+                <div class="flex flex-col gap-[80px]">
+                    @foreach($categories as $category)
+                        @if($category->products->count())
+                            {{-- <hr style="border: none; margin-top: 20px; margin-bottom: 20px;"> --}}
+                            {{-- Titre catégorie --}}
+                            <h2 id="{{ $category->slug }}" class="text-center font-bold text-[28px] mb-[20px] mt-[40px]">
+                                {{ $categoryTitles[strtolower($category->name)] ?? ucfirst($category->name) }}
+                            </h2>
+
+                            {{-- Grille : ici tu gardes ton template original --}}
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[30px]">
+
+                                @foreach($category->products as $product)
+                                <div class="ed-2-single-course mix promoteur border border-[#e5e5e5] rounded-[10px] p-[20px] group">
+                                    <!-- course image  -->
+                                    <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
+                                        <img src="{{ $product->image ? asset('storage/app/public/'.$product->image) : asset('public/frontend/assets/img/course-1.jpg') }}"
+                                            alt="{{ $product->name }}"
+                                            class="aspect-[330/223] w-full object-cover group-hover:scale-110">
+                                    </div>
+
+                                    <!-- course infos -->
+                                    <div class="flex justify-between items-center mb-[16px]">
+                                        <span class="inline-flex items-center justify-center border border-[#e5e5e5] px-[10px] h-[33px] rounded-[6px] font-medium text-[#808080] text-[14px]">
+                                            {{ ucfirst($category->name) }}
+                                        </span>
+
+                                        <span class="text-edpurple font-semibold text-[20px]">
+                                            {{ $product->price > 0
+                                                ? number_format($product->price, 0, ',', ' ') . ' FCFA'
+                                                : 'Sur Devis' }}
+                                        </span>
+                                    </div>
+
+                                    <!-- course title -->
+                                    <h5 class="font-semibold text-[20px] text-edblue mb-[23px]">
+                                        <a href="#"
+                                        class="hover:text-edpurple">
+                                            {{ $product->name }}
+                                        </a>
+                                    </h5>
+
+                                    <!-- course footer -->
+                                    <div class="flex flex-wrap gap-x-[20px] gap-y-[15px] justify-between items-center border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
+                                        <button type="button"
+                                                onclick="openProductModal({{ $product->id }})"
+                                                class="h-[50px] px-[22px] border border-edpurple rounded-[8px] flex gap-[8px] items-center justify-center group hover:text-white hover:bg-edpurple">
+                                            <span>Voir les détails</span>
+                                            <i class="fa-solid fa-arrow-right-long"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            </div>
+
+                        @endif
+
+                    @endforeach
+
+                    {{-- Container si tu utilises la 1ère méthode (HTML modal injectée) --}}
+                    <div id="modal-container"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- COURSES SECTION END -->
 
     <!-- TESTIMONIAL SECTION START -->
     <section class="ed-2-about bg-edoffwhite py-[120px] xl:py-[80px] md:py-[60px] relative z-[1] before:absolute before:inset-0 before:-z-[1] before:bg-[url('../assets/img/about-us-bg.png')] before:opacity-[5%] before:bg-no-repeat before:bg-cover before:bg-center before:mix-blend-multiply">
@@ -117,7 +221,6 @@
                     <div class="ed-2-testimonial-slider swiper max-w-[1200px]">
                         <div class="swiper-wrapper">
                             <!-- single testimony -->
-                         @foreach($temoignages as $d) 
                             <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
                                 <div class="et-testimony bg-white p-[30px] xxs:p-[20px] border border-[#d9d9d9] rounded-[20px]">
                                     <!-- single testimony heading -->
@@ -126,8 +229,8 @@
 
                                         <div class="flex items-center justify-between grow xxs:w-full">
                                             <div class="left">
-                                                <h5 class="text-edblue font-semibold text-[20px] mb-[1px]">{{ $d->titre }}</h5>
-                                                <h6 class="text-[16px] text-edpurple font-normal">{{ $d->created_at }}</h6>
+                                                <h5 class="text-edblue font-semibold text-[20px] mb-[1px]">M. TRAORE</h5>
+                                                <h6 class="text-[16px] text-edpurple font-normal">Investisseur chez Indépendant</h6>
                                             </div>
 
                                             <div class="right">
@@ -136,24 +239,21 @@
                                         </div>
                                     </div>
 
-                                    <p class="text-[#445375] font-normal mb-[21px]">{{ $d->contenue }}</p>
+                                    <p class="text-[#445375] font-normal mb-[21px]">Grâce au guide d'investissement et aux conseils d'Alerte Foncier, j'ai pu sécuriser mon premier achat sans aucun problème. Un service de qualité !</p>
 
                                     <!-- rating stars -->
                                     <div class="inline-flex items-center gap-[6px] border border-edyellow rounded-full px-[10px] h-[40px]">
-                                        
-                                        @for ($i = 1; $i <= $d->notation; $i++)
-                                          <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
-                                        @endfor
-                                       {{-- <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                         <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                         <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
-                                        <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">  --}}
+                                        <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
+                                        <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
+                                        <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                     </div>
                                 </div>
                             </div>
-                             @endforeach 
+
                             <!-- single testimony -->
-                            {{-- <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
+                            <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
                                 <div class="et-testimony bg-white p-[30px] xxs:p-[20px] border border-[#d9d9d9] rounded-[20px]">
                                     <!-- single testimony heading -->
                                     <div class="et-testimony__heading flex xxs:flex-col items-center gap-[22px] mb-[42px] xxs:mb-[22px]">
@@ -182,10 +282,10 @@
                                         <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                     </div>
                                 </div>
-                            </div>  --}}
+                            </div>
 
                             <!-- single testimony -->
-                             {{-- <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
+                            <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
                                 <div class="et-testimony bg-white p-[30px] xxs:p-[20px] border border-[#d9d9d9] rounded-[20px]">
                                     <!-- single testimony heading -->
                                     <div class="et-testimony__heading flex xxs:flex-col items-center gap-[22px] mb-[42px] xxs:mb-[22px]">
@@ -214,7 +314,7 @@
                                         <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                     </div>
                                 </div>
-                            </div>  --}}
+                            </div>
                         </div>
                     </div>
                 </div>

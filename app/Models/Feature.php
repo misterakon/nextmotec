@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Feature extends Model
 {
     protected $fillable = [
-        'name',
+        'title',
         'description',
-        'is_active',
+        'sort_order',
+        'active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'active' => 'boolean',
     ];
 
     public function product()

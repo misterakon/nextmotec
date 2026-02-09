@@ -22,4 +22,9 @@ class Customer extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+      public function temoignage()
+    {
+        return $this->belongsTo(Temoignage::class);
+    }
 }
