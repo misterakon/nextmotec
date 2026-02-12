@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\CustomerType;
 use App\Models\Category;
-use App\Models\SubscriptionType;
+use App\Models\Temoignage;
 
 class ProductController extends Controller
 {
@@ -28,10 +28,14 @@ class ProductController extends Controller
             ->orderBy('name')
             ->get();
 
+              // Charger les temoignages 
+        $temoignages = Temoignage::where('active', '1')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
 
         $customertypes = CustomerType::orderBy('name')->get();
-        // $subscriptiontypes = SubscriptionType::orderBy('price')->get();
-        return view('frontend.index', compact('products', 'customertypes', 'categories'));
+        return view('frontend.index', compact('products', 'customertypes', 'categories','temoignages'));
     }
 
     // public function details(Product $product)

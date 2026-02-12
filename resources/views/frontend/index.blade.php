@@ -19,6 +19,8 @@
 
             <div class="ed-2-courses-filter-navs flex flex-wrap justify-center gap-[10px] mb-[40px] xs:mb-[30px] pb-[30px] xs:pb-[20px] border-b border-[#002147]/15 mx-[200px] lg:mx-[100px] md:mx-[12px] *:border *:border-edpurple *:rounded-[6px] *:py-[5px] *:px-[10px] *:text-edpurple *:font-medium *:text-[14px]">
                 <button class="hover:bg-edpurple hover:text-white mixitup-control-active" data-filter="all">
+            <div class="ed-2-courses-filter-navs flex flex-wrap justify-center gap-[10px] mb-[40px] xs:mb-[30px] pb-[30px] xs:pb-[20px] border-b border-[#002147]/15 mx-[200px] lg:mx-[100px] md:mx-[12px] *:border *:border-edpurple *:rounded-[6px] *:py-[5px] *:px-[10px] *:text-edpurple *:font-medium *:text-[14px]">
+                <button class="hover:bg-edpurple hover:text-white mixitup-control-active" data-filter="all">
                     Tous
                 </button>
 
@@ -106,8 +108,13 @@
                 </div>
             </div>
 
+                    
+                </div><br><br>
+            @endforeach
+
         </div>
     </section>
+
 
 
     <!-- TESTIMONIAL SECTION START -->
@@ -130,6 +137,7 @@
                     <div class="ed-2-testimonial-slider swiper max-w-[1200px]">
                         <div class="swiper-wrapper">
                             <!-- single testimony -->
+                         @foreach($temoignages as $d) 
                             <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
                                 <div class="et-testimony bg-white p-[30px] xxs:p-[20px] border border-[#d9d9d9] rounded-[20px]">
                                     <!-- single testimony heading -->
@@ -138,8 +146,8 @@
 
                                         <div class="flex items-center justify-between grow xxs:w-full">
                                             <div class="left">
-                                                <h5 class="text-edblue font-semibold text-[20px] mb-[1px]">M. TRAORE</h5>
-                                                <h6 class="text-[16px] text-edpurple font-normal">Investisseur chez Indépendant</h6>
+                                                <h5 class="text-edblue font-semibold text-[20px] mb-[1px]">{{ $d->titre }}</h5>
+                                                <h6 class="text-[16px] text-edpurple font-normal">{{ $d->created_at }}</h6>
                                             </div>
 
                                             <div class="right">
@@ -148,21 +156,24 @@
                                         </div>
                                     </div>
 
-                                    <p class="text-[#445375] font-normal mb-[21px]">Grâce au guide d'investissement et aux conseils d'Alerte Foncier, j'ai pu sécuriser mon premier achat sans aucun problème. Un service de qualité !</p>
+                                    <p class="text-[#445375] font-normal mb-[21px]">{{ $d->contenue }}</p>
 
                                     <!-- rating stars -->
                                     <div class="inline-flex items-center gap-[6px] border border-edyellow rounded-full px-[10px] h-[40px]">
+                                        
+                                        @for ($i = 1; $i <= $d->notation; $i++)
+                                          <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
+                                        @endfor
+                                       {{-- <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                         <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                         <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
-                                        <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
-                                        <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
-                                        <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
+                                        <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">  --}}
                                     </div>
                                 </div>
                             </div>
-
+                             @endforeach 
                             <!-- single testimony -->
-                            <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
+                            {{-- <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
                                 <div class="et-testimony bg-white p-[30px] xxs:p-[20px] border border-[#d9d9d9] rounded-[20px]">
                                     <!-- single testimony heading -->
                                     <div class="et-testimony__heading flex xxs:flex-col items-center gap-[22px] mb-[42px] xxs:mb-[22px]">
@@ -191,10 +202,10 @@
                                         <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                     </div>
                                 </div>
-                            </div>
+                            </div>  --}}
 
                             <!-- single testimony -->
-                            <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
+                             {{-- <div class="swiper-slide w-[570px] lg:w-[540px] xs:w-full">
                                 <div class="et-testimony bg-white p-[30px] xxs:p-[20px] border border-[#d9d9d9] rounded-[20px]">
                                     <!-- single testimony heading -->
                                     <div class="et-testimony__heading flex xxs:flex-col items-center gap-[22px] mb-[42px] xxs:mb-[22px]">
@@ -223,7 +234,7 @@
                                         <img src="{{ asset('public/frontend/assets/img/icon/star.svg') }}" alt="star">
                                     </div>
                                 </div>
-                            </div>
+                            </div>  --}}
                         </div>
                     </div>
                 </div>

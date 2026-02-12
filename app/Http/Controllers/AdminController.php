@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Http\Controllers\AdminController;
 use App\Models\Category;
-use Illuminate\View\View;
-use Illuminate\Support\Str;
 use App\Models\CustomerType;
 use App\Models\Feature;
+use App\Models\Product;
 use App\Models\SubscriptionType;
+use App\Models\Temoignage;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class AdminController extends Controller
 {
@@ -292,4 +295,44 @@ class AdminController extends Controller
         }
         return response()->json(['status' => false], 404);
 	}	
+
+    // PARTIE TEMOIGNAGE
+    public function temoignage()
+    {
+        $temoignage = Temoignage::all();
+
+        return view('backend.liste_temoignage',compact('temoignage'));
+    }
+
+    public function save_temoignage(Request $request)
+    {
+        $id = $request->input('id_'); // null si création
+
+        // Validation unique dynamique
+        $request->validate([
+            'titre' => [
+                'required',
+                Rule::unique('customer_id', 'titre')->ignore($id),
+            ],
+        ], [
+            'titre.unique'    => 'Ce titre existe déjà.',
+        ]);
+
+        // Création ou mise à jour
+        Temoignage::updateOrCreate(
+            ['id' => $id],
+            [
+                'titre'    => $request->titre,
+                'notation' => $request->notation,
+                'contenue' => $request->commentaire,
+                'active'   => $request->statut,
+            ]
+        );
+
+        return redirect()->back()->with(
+            'success',
+            $id ? 'Temoignage mis à jour avec succès !' : 'Temoignage créée avec succès !'
+        );
+    }
+    
 }

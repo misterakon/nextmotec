@@ -58,7 +58,7 @@
             </a>
         </li>
         <li class="menu-item" style="font-weight:bold">
-            <a href="{{ route('prod.produit') }}" class="menu-link">
+            <a href="{{ route('prod.temoignage') }}" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-forms"></i>
                 <div data-i18n="Témoignages">Témoignages</div>
             </a>
