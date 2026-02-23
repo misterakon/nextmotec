@@ -6,6 +6,7 @@
 		// Nettoyage dynamique
     $('#fonctionnalite-wrapper .fonctionnalite-item:not(.fonctionnalite-master)').remove();
     $('#document-wrapper .document-item:not(.document-master)').remove();
+    $('#prix-wrapper .prix-item:not(.prix-master)').remove();// prix NIAMIEN
 
 		$('.modal_form').trigger('reset');
 		$('#modal_form').modal('show');
@@ -57,6 +58,32 @@
 		});
 	}
 
+   function edit_temoignage(id) 
+	{		
+		$('.modal_form').trigger('reset'); // reset du formulaire
+		$('.bouton').html('Modifier');
+
+		$.ajax({
+			url: "{{ route('prod.get_temoignage', ':id') }}".replace(':id', id),
+			type: "GET",
+			dataType: "JSON",
+			success: function(data) {
+				// Champs simples
+				$('[name="id_"]').val(data.id);
+				$('[name="titre"]').val(data.titre);
+        $('[name="notation"]').val(data.notation);
+        $('[name="commentaire"]').val(data.contenue);
+        $('[name="statut"]').val(data.active == true ? 1 : 0);
+
+				// Ouverture du modal
+				$('#modal_form').modal('show');
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				alert('Erreur lors du chargement des données.');
+			}
+		});
+	}
+
   function edit_produit(id) {
 
     $('.modal_form').trigger('reset'); // reset du formulaire
@@ -67,6 +94,7 @@
     // Nettoyage dynamique
     $('#fonctionnalite-wrapper .fonctionnalite-item:not(.fonctionnalite-master)').remove();
     $('#document-wrapper .document-item:not(.document-master)').remove();
+    $('#prix-wrapper .prix-item:not(.prix-master)').remove();// prix NIAMIEN
 
     $.ajax({
       url: "{{ route('prod.get_produit', ':id') }}".replace(':id', id),
@@ -79,7 +107,7 @@
         ========================= */
         $('[name="id_"]').val(data.id);
         $('[name="libelle"]').val(data.name);
-        $('[name="prix"]').val(data.price);
+        //$('[name="prix"]').val(data.price);
         $('[name="short_desc"]').val(data.short_desc);
         $('[name="presentation"]').val(data.long_desc);
         $('[name="statut"]').val(data.active == true ? 1 : 0);
@@ -108,6 +136,20 @@
           }
         }
 
+        //  /* ON CHARGE DES PRIX */
+        // if (data.features && data.features.length) {
+
+        //   // Première ligne (master)
+        //   let master = $('#prix-wrapper .prix-master');
+        //   master.find('input').val(data.features[0].title).css('border-color', '#025f07');
+
+        //   // Lignes suivantes
+        //   for (let i = 1; i < data.features.length; i++) {
+        //     add_ligne_prix();
+        //     $('#prix-wrapper .prix-item:last').find('input').val(data.features[i].title).css('border-color', '#025f07');
+        //   }
+        // }
+
         /* ON CHARGE LES DOCUMENTS ENREGISTRES */
         if (data.documentations && data.documentations.length) {
 
@@ -129,6 +171,32 @@
             $('#document-wrapper .document-item:last').find('input, select').css('border-color', '#025f07');
           }
         }
+      
+
+        /* ON CHARGE LES prix ENREGISTRES */
+        if (data.prix && data.prix.length) {
+
+          const firstPrix = data.prix[0];
+          fill_prix_line($('.prix-master'), firstPrix);
+
+          $('.prix-master').find('.prix-id').val(firstPrix.id);
+          $('.prix-master').find('input, select').css('border-color', '#025f07');
+
+          for (let i = 1; i < data.prix.length; i++) {
+            add_ligne_prix();
+
+            let row = $('#prix-wrapper .prix-item:last');
+
+            fill_prix_line($('#prix-wrapper .prix-item:last'), data.prix[i]);
+            row.find('.prix-id').val(data.prix[i].id);
+
+            //on change ici la couleur des champs pour les données chargées depuis la base
+            $('#prix-wrapper .prix-item:last').find('input, select').css('border-color', '#025f07');
+          }
+        }
+
+
+        
 
         // Ouvrir le modal
         $('#modal_form').modal('show');
@@ -158,6 +226,17 @@
       row.find('.fichier').hide().val('');
       row.find('.lien-video').show().val(doc.url);
     }
+  }
+
+   function fill_prix_line(row, price) {
+
+    row.find('.type-abon').val(price.type);
+
+    row.find('input[name="prix[]"]').val(price.title);
+    row.find('input[name="titre_abon[]"]').val(price.title);
+	
+	  row.find('.type_statut').val(price.type);
+
   }
 
   function deletes(route, id) {
@@ -257,6 +336,27 @@
       lastNew.remove();
     }
   }
+//function prix add et delete NIAMIEN
+  //  function add_ligne_prix() {
+  //   let item = $('.prix-master').clone();
+
+  //   item.removeClass('prix-master from-db').addClass('new-line');
+
+  //   item.find('input').val('').css('border-color', '');
+  //   item.find('.col-md-2').remove(); // enlever boutons
+
+  //   $('#prix-wrapper').append(item);
+  // }
+
+  // function delete_ligne_prix() {
+  //   // Supprimer uniquement la dernière ligne ajoutée
+  //   let lastNew = $('#prix-wrapper .new-line').last();
+
+  //   if (lastNew.length) {
+  //     lastNew.remove();
+  //   }
+  // }
+// END FUNCTION PRIX
 
   function add_ligne_document() {
     let item = $('.document-master').clone();
@@ -273,8 +373,33 @@
     $('#document-wrapper').append(item);
   }
 
+
+   function add_ligne_prix() {
+    let item = $('.prix-master').clone();
+
+    //On Nettoie
+    item.removeClass('prix-master');
+
+    item.find('select').val('').css('border-color', '');
+    item.find('input, select').val('').css('border-color', '');
+
+    //on supprime la colonne boutons dans les lignes clonées
+    item.find('.col-md-1').remove();
+
+    $('#prix-wrapper').append(item);
+  }
+
   function delete_ligne_document() {
     let items = $('.document-item');
+
+    //Ne jamais supprimer la ligne principale
+    if (items.length > 1) {
+      items.last().remove();
+    }
+  }
+
+  function delete_ligne_prix() {
+    let items = $('.prix-item');
 
     //Ne jamais supprimer la ligne principale
     if (items.length > 1) {

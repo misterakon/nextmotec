@@ -20,12 +20,12 @@
       </div>
 
       <div class="space-y-[15px]">
-        <a href="{{ route('checkout.index') }}"
+        <a href="#" {{-- route('checkout.index')--}}
            class="ed-btn w-full !rounded-[10px] !bg-transparent border border-edblue !text-edblue hover:!bg-edblue hover:!text-white">
           Voir le panier
         </a>
 
-        <a href="{{ route('checkout.index') }}"
+        <a href="#" {{-- route('checkout.index')--}}
            class="ed-btn w-full !rounded-[10px]">
           Procéder au paiement
         </a>

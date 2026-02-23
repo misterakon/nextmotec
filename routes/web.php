@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/temoignage', [AdminController::class, 'temoignage'])->name('prod.temoignage');
     Route::post('/temoignage', [AdminController::class, 'save_temoignage'])->name('prod.save_temoignage');
+    Route::get('/temoignage/{id}', [AdminController::class, 'get_temoignage'])->name('prod.get_temoignage');
+    Route::delete('/temoignage/{id}', [AdminController::class, 'delete_temoignage'])->name('prod.delete_temoignage');
 });
 
 Route::get('/produit/{id}', [AdminController::class, 'get_produit'])->name('prod.get_produit');

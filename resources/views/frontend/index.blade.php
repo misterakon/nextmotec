@@ -110,7 +110,7 @@
 
                     
                 </div><br><br>
-            @endforeach
+            {{-- @endforeach --}}
 
         </div>
     </section>

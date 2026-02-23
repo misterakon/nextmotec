@@ -38,9 +38,11 @@ class AdminController extends Controller
     {
         $type_client = CustomerType::all();
         $categorie = Category::all();
-        $produit = Product::with(['customerType', 'category'])->get();
+        $subscription =SubscriptionType::all();
+        $produit = Product::with(['customerType', 'category', 'subscriptionTypes'])->get();
+        //dd($produit);
 
-        return view('backend.liste_produit', compact('produit', 'type_client', 'categorie'));
+        return view('backend.liste_produit', compact('produit', 'type_client', 'categorie','subscription'));
     }
 
     public function save_type_client(Request $request)
@@ -120,7 +122,8 @@ class AdminController extends Controller
             ],
             'type_client' => 'required|exists:customer_types,id',
             'categorie'   => 'required|exists:categories,id',
-            'prix'           => 'required|numeric|min:0',
+            //'prix'           => 'required|numeric|min:0',
+            'prix'           => 'required|array|min:1',//NIAMIEN
             'short_desc'     => 'required|string|max:255',
             'presentation'   => 'required|string',
             'statut'         => 'required|boolean',
@@ -159,7 +162,7 @@ class AdminController extends Controller
                 'name'            => $request->libelle,
                 'customer_type_id'  => $request->type_client,
                 'category_id'    => $request->categorie,
-                'price'            => $request->prix,
+                //'price'            => $request->prix,
                 'short_desc'      => $request->short_desc,
                 'long_desc'    => $request->presentation,
                 'active'          => $request->statut,
@@ -180,6 +183,36 @@ class AdminController extends Controller
                 ]);
             }
         }
+// NIAMIEN PRIX
+ if ($request->filled('type_abon')) {
+
+            //IDs envoyés par le formulaire
+            $sentIds = collect($request->prix_id)->filter();
+
+
+            foreach ($request->type_abon as $index => $type) {
+
+                $prixId = $request->prix_id[$index] ?? null;
+                $titre = $request->titre_abon[$index] ?? null;
+				$prix = $request->prix[$index] ?? null;
+                $type_abon = $request->type_abon[$index] ?? null;
+                $type_statut = $request->type_statut[$index] ?? null;
+
+                    $produit->subscriptionTypes()->updateOrCreate(
+                        ['id' => $prixId],
+                        [
+                            'titre' => $titre,
+                            'type' =>$type_abon,
+                            'price' =>$prix,
+                            'achat_unique' =>$type_statut,
+                            //'achat_unique' => true,
+                        ]
+                    );
+                
+
+            }
+        }
+
 
         /* Documents */
         if ($request->filled('type_doc')) {
@@ -257,6 +290,15 @@ class AdminController extends Controller
         }
     }
 
+      public function get_temoignage($id)
+    {
+        $temoignage = Temoignage::where('id', $id)->firstOrFail();
+
+        if ($temoignage) {
+            return response()->json($temoignage);
+        }
+    }
+
     public function get_produit($id)
     {
         $produit = Product::with(['features', 'documentations', 'subscriptionTypes','category'])->findOrFail($id);
@@ -286,6 +328,16 @@ class AdminController extends Controller
         return response()->json(['status' => false], 404);
 	}	
 
+     public function delete_temoignage($id)
+	{		
+        $temoignage = Temoignage::find($id);
+        if ($temoignage) {
+            $temoignage->delete();
+            return response()->json(['status' => true]);
+        }
+        return response()->json(['status' => false], 404);
+	}	
+
     public function delete_produit($id)
 	{		
         $produit = Product::find($id);
@@ -308,22 +360,21 @@ class AdminController extends Controller
     {
         $id = $request->input('id_'); // null si création
 
-        // Validation unique dynamique
+         // Validation unique dynamique
         $request->validate([
             'titre' => [
                 'required',
-                Rule::unique('customer_id', 'titre')->ignore($id),
+                Rule::unique('customer_types', 'name')->ignore($id),
             ],
         ], [
-            'titre.unique'    => 'Ce titre existe déjà.',
+            'titre.unique'    => 'Ce type client existe déjà.',
         ]);
-
-        // Création ou mise à jour
         Temoignage::updateOrCreate(
             ['id' => $id],
             [
                 'titre'    => $request->titre,
                 'notation' => $request->notation,
+                'customer_id'    => "1",
                 'contenue' => $request->commentaire,
                 'active'   => $request->statut,
             ]

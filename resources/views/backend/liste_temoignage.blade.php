@@ -45,10 +45,10 @@
                   <td>{{ $d->created_at }}</td>
                   <td><span class="badge bg-label-{{ $d->active == 1 ? 'success':'danger' }}">{{ $d->active == 1 ? 'Actif':'Inactif' }}</span></td>
                   <td class="text-center">
-                    <button type="button" class="btn btn-icon rounded-pill btn-success" onclick="#" title="Modifier">
+                    <button type="button" class="btn btn-icon rounded-pill btn-success" onclick="edit_temoignage({{ $d->id }})" title="Modifier">
                       <i class="icon-base ti tabler-edit icon-sm text-white"></i>
                     </button>
-                    <button type="button" class="btn btn-icon rounded-pill btn-danger" onclick="#" title="Supprimer">
+                    <button type="button" class="btn btn-icon rounded-pill btn-danger" onclick="deletes('{{ route('prod.delete_temoignage', ':id') }}', {{ $d->id }})" title="Supprimer">
                       <i class="icon-base ti tabler-trash icon-sm text-white"></i>
                     </button>
                     {{-- <button type="button" class="btn btn-icon rounded-pill btn-warning" onclick="fonctionnalite({{ $d->id }})" title="Fonctionnalités & Documentation">

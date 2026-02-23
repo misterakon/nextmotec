@@ -28,7 +28,7 @@
                 <th>LIBELLE</th>
                 <th>PRIX</th>
                 <th>TYPE_CLIENT</th>
-                <th>CETEGORIE</th>
+                <th>CATEGORIE</th>
                 <th>PRESENTATION</th>
                 <th>STATUT</th>
                 <th class="text-center" style="width:10%;">ACTIONS</th>
@@ -37,9 +37,16 @@
             <tbody>
               @if(!$produit->isEmpty())
                 @foreach($produit as $d)
+                @php
+                  $price = $d->subscriptionTypes->collect();
+                @endphp
                 <tr id="row-{{ $d->id }}">
                   <td>{{ $d->name }}</td>
-                  <td>{{ $d->price }}</td>
+                  <td>
+                    @foreach($price as $p)
+                    {{ " ".$p->price }} <br>
+                    @endforeach
+                  </td>
                   <td>{{ $d->customerType->name }}</td>
                   <td>{{ $d->category->name }}</td>
                   <td>{{ $d->short_desc }}</td>
