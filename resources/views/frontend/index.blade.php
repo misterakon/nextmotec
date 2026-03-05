@@ -17,10 +17,12 @@
                 <p style="font-size:16px; color: #4d4d4d">Sélectionnez votre profil pour découvrir les outils et formations que nous avons conçus pour vous.</p>
             </div>
 
-            <div class="ed-2-courses-filter-navs flex flex-wrap justify-center gap-[10px] mb-[40px] xs:mb-[30px] pb-[30px] xs:pb-[20px] border-b border-[#002147]/15 mx-[200px] lg:mx-[100px] md:mx-[12px] *:border *:border-edpurple *:rounded-[6px] *:py-[5px] *:px-[10px] *:text-edpurple *:font-medium *:text-[14px]">
-                <button class="hover:bg-edpurple hover:text-white mixitup-control-active" data-filter="all">
-            <div class="ed-2-courses-filter-navs flex flex-wrap justify-center gap-[10px] mb-[40px] xs:mb-[30px] pb-[30px] xs:pb-[20px] border-b border-[#002147]/15 mx-[200px] lg:mx-[100px] md:mx-[12px] *:border *:border-edpurple *:rounded-[6px] *:py-[5px] *:px-[10px] *:text-edpurple *:font-medium *:text-[14px]">
-                <button class="hover:bg-edpurple hover:text-white mixitup-control-active" data-filter="all">
+              <div
+                class="ed-2-courses-filter-navs flex flex-wrap justify-center gap-[10px] mb-[40px] pb-[30px] border-b border-[#002147]/15 mx-[200px] lg:mx-[100px] md:mx-[12px]
+                    *:border *:border-edpurple *:rounded-[6px] *:py-[5px] *:px-[10px] *:text-edpurple *:font-medium *:text-[14px]">
+
+                <!-- Tous -->
+                <button class="hover:bg-edpurple hover:text-white active" data-filter="all">
                     Tous
                 </button>
 
@@ -109,7 +111,7 @@
             </div>
 
                     
-                </div><br><br>
+            </div><br><br>
             {{-- @endforeach --}}
 
         </div>
