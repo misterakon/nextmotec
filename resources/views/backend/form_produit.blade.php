@@ -6,8 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form class="modal_form" action="{{ route('prod.save_produit') }}" method="post"
-                enctype="multipart/form-data">
+            <form class="modal_form" action="{{ route('prod.save_produit') }}" method="post" enctype="multipart/form-data">
                 @csrf {{-- Token de sécurité obligatoire --}}
                 <input type="hidden" name="id_" class="form-control"> {{-- pour les update --}}
 
@@ -69,69 +68,110 @@
                     </div>--}}
 
                     {{-- Gestion des prix --}}
+                    <div class="divider my-2">
+                        <div class="divider-text fw-bold text-danger">Tarifs & Offres</div>
+                    </div>
                     <div id="prix-wrapper">
-                        <div class="row">
-                            <div class="col-md-2 mb-2">
-                                <label for="libelle" class="form-label fw-bold">Type d'abonnement <span
-                                        class="text-danger fw-bold">*</span></label>
-                            </div>
-                            <div class="col-md-4 mb-2">
-                                <label for="libelle" class="form-label fw-bold">Titre<span
-                                        class="text-danger fw-bold">*</span></label>
-                            </div>
-                            <div class="col-md-2 mb-2">
-                                <label for="libelle" class="form-label fw-bold">Prix<span
-                                        class="text-danger fw-bold">*</span></label>
-                            </div>
-                            <div class="col-md-2 mb-2">
-                                <label for="libelle" class="form-label fw-bold">Type d'achat<span
-                                        class="text-danger fw-bold">*</span></label>
-                            </div>
+
+                        <div class="divider my-2">
+                            <div class="divider-text fw-bold">Offre N°1</div>
                         </div>
-                        <div class="row prix-item prix-master">
-                            <div class="col-md-2 mb-4">
+
+                        <div class="row prix-item prix-master mb-3">
+
+                            <!-- COLONNE GAUCHE -->
+                            <div class="col-md-4">
+
                                 <input type="hidden" name="prix_id[]" class="prix-id">
-                                <select class="form-select type-abon" name="type_abon[]"
-                                    onchange="change_type_abon(this)" required>
-                                    <option value="">Type d'abonnement</option>
-                                    <option value="MENSUEL">MENSUEL</option>
-                                    <option value="ANNUEL">ANNUEL</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4 mb-4">
-                                <input type="text" name="titre_abon[]" class="form-control"
-                                    placeholder="Titre d'abonnement" required>
-                            </div>
-                            
-                            <div class="col-md-2 mb-4">
-                                <input type="number" name="prix[]" step="0.01" class="form-control"
-                                    placeholder="prix" required>
-                            </div>
 
-                            <div class="col-md-3 mb-4">
-                                <select class="form-select type-statut" name="type_statut[]"
-                                    id="exampleFormControlSelect1" required>
-                                    <option selected>Type d'achat</option>
-                                    <option value="1">Multiple</option>
-                                    <option value="0">Unique</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-1 mb-4">
-                                <div class="d-flex justify-content-center gap-3">
-                                    <button type="button" class="btn btn-icon rounded-pill btn-info add-prix"
-                                        onclick="add_ligne_prix()" title="Ajouter un prix">
-                                        <i class="icon-base ti tabler-plus icon-22px"></i>
-                                    </button>
-
-                                    <button type="button" class="btn btn-icon rounded-pill btn-danger remove-prix"
-                                        onclick="delete_ligne_prix()" titre="Supprimer une ligne">
-                                        <i class="icon-base ti tabler-trash icon-22px"></i>
-                                    </button>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        Type d'abonnement <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select type-abon" name="type_abon[]" onchange="change_type_abon(this)" required>
+                                        <option value="">Type d'abonnement</option>
+                                        <option value="MENSUEL">MENSUEL</option>
+                                        <option value="ANNUEL">ANNUEL</option>
+                                    </select>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        Type d'achat <span class="text-danger">*</span>
+                                    </label>
+
+                                    <select class="form-select type-statut" name="type_statut[]" required>
+                                        <option selected>Type d'achat</option>
+                                        <option value="1">Multiple</option>
+                                        <option value="0">Unique</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        Prix <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="number" name="prix[]" step="0.01" class="form-control" placeholder="Prix" required>
+                                </div>
+
+                            </div>
+
+
+                            <!-- COLONNE DROITE -->
+                            <div class="col-md-8">
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">
+                                        Titre <span class="text-danger">*</span>
+                                    </label>
+
+                                    <input type="text" name="titre_abon[]" class="form-control" placeholder="Titre d'abonnement" required>
+                                </div>
+
+
+                                <div class="row">
+
+                                    <div class="col-md-10">
+                                        <label class="form-label fw-bold">
+                                            Détail de l'offre <span class="text-danger">*</span>
+                                        </label>
+
+                                        <textarea class="form-control details_offre" name="details_offre[]" id="details_offre"
+                                                rows="4"
+                                                placeholder="- Mises à jour incluses
+- Support technique
+- 1 utilisateur"
+                                                required></textarea>
+                                    </div>
+
+
+                                    <!-- BOUTONS -->
+                                    <div class="col-md-2 d-flex align-items-center gap-2">
+
+                                        <button type="button"
+                                                class="btn btn-icon rounded-pill btn-info add-prix"
+                                                onclick="add_ligne_prix()"
+                                                title="Ajouter un prix">
+
+                                            <i class="icon-base ti tabler-plus icon-22px"></i>
+                                        </button>
+
+                                        <button type="button"
+                                                class="btn btn-icon rounded-pill btn-danger remove-prix"
+                                                onclick="delete_ligne_prix()"
+                                                title="Supprimer une ligne">
+
+                                            <i class="icon-base ti tabler-trash icon-22px"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
+
                     </div>
                     {{-- end Gestion des prix --}}
 

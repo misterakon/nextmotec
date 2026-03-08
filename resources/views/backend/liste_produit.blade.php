@@ -84,7 +84,57 @@
   <script>
     $('.lien_video').hide();
 
-    if()
+  
+    //POUR GERER LES POINT . DANS LE TEXTAREA DETAILS OFFRE
+  document.addEventListener("focus", function(e){
+
+      if(e.target.classList.contains("details_offre")){
+
+          if(e.target.value.trim() === ""){
+              e.target.value = "• ";
+          }
+
+      }
+
+  }, true);
+
+
+  document.addEventListener("keydown", function(e){
+
+      if(!e.target.classList.contains("details_offre")) return;
+
+      const textarea = e.target;
+
+      // Ajouter automatiquement "• " quand on appuie sur Entrée
+      if(e.key === "Enter"){
+
+          e.preventDefault();
+
+          const cursor = textarea.selectionStart;
+
+          const before = textarea.value.substring(0, cursor);
+          const after = textarea.value.substring(cursor);
+
+          textarea.value = before + "\n• " + after;
+
+          textarea.selectionStart = textarea.selectionEnd = cursor + 3;
+      }
+
+      // Empêcher suppression du bullet au début de ligne
+      if(e.key === "Backspace"){
+
+          const cursor = textarea.selectionStart;
+
+          const lineStart = textarea.value.lastIndexOf("\n", cursor - 1) + 1;
+
+          const textBeforeCursor = textarea.value.substring(lineStart, cursor);
+
+          if(textBeforeCursor === "• "){
+              e.preventDefault();
+          }
+      }
+
+  });
   </script>
 
 @endsection

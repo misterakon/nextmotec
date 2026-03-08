@@ -183,36 +183,31 @@ class AdminController extends Controller
                 ]);
             }
         }
-        // NIAMIEN PRIX
+
+        // NIAMIEN PRIX -> UPDATE AKON
         if ($request->filled('type_abon')) {
 
-            //IDs envoyés par le formulaire
-            $sentIds = collect($request->prix_id)->filter();
+            //On récupère tous les IDs envoyés pour savoir quoi garder
+            $sentIds = collect($request->prix_id)->filter()->toArray();
 
+            //On Supprimer les abonnements qui ne sont plus dans le formulaire
+            $produit->subscriptionTypes()->whereNotIn('id', $sentIds)->delete();
 
             foreach ($request->type_abon as $index => $type) {
-
                 $prixId = $request->prix_id[$index] ?? null;
-                $titre = $request->titre_abon[$index] ?? null;
-				$prix = $request->prix[$index] ?? null;
-                $type_abon = $request->type_abon[$index] ?? null;
-                $type_statut = $request->type_statut[$index] ?? null;
 
-                    $produit->subscriptionTypes()->updateOrCreate(
-                        ['id' => $prixId],
-                        [
-                            'titre' => $titre,
-                            'type' =>$type_abon,
-                            'price' =>$prix,
-                            'achat_unique' =>$type_statut,
-                            //'achat_unique' => true,
-                        ]
-                    );
-                
-
+                $produit->subscriptionTypes()->updateOrCreate(
+                    ['id' => $prixId], //Si ID trouvé, on fait update
+                    [
+                        'titre'        => $request->titre_abon[$index] ?? null,
+                        'type'         => $request->type_abon[$index] ?? null,
+                        'price'        => $request->prix[$index] ?? null,
+                        'description'  => $request->details_offre[$index] ?? null,
+                        'achat_unique' => $request->type_statut[$index] ?? null,
+                    ]
+                );
             }
         }
-
 
         /* Documents */
         if ($request->filled('type_doc')) {
@@ -301,7 +296,7 @@ class AdminController extends Controller
 
     public function get_produit($id)
     {
-        $produit = Product::with(['features', 'documentations', 'subscriptionTypes','category'])->findOrFail($id);
+        $produit = Product::with(['features', 'documentations', 'subscriptionTypes', 'category'])->findOrFail($id);
 
         if ($produit) {
             return response()->json($produit);

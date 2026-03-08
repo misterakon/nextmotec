@@ -9,13 +9,14 @@
     }
 
     function parseBullets(desc) {
+
         if (!desc) return [];
 
         return String(desc)
-            .split(/\r?\n/)
+            .replace(/\\r\\n/g,"\n")   // transforme \r\n en saut de ligne
+            .split(/\n+/)
             .map(l => l.trim())
-            .filter(Boolean)
-            .map(l => l.replace(/^[-•]\s*/, ''));
+            .filter(Boolean);
     }
     
     function formatPriceOnly(val) {
@@ -285,16 +286,23 @@
                     data.long_desc ? data.long_desc.replace(/\n/g, '<br>') : 'Aucune présentation disponible.'
                 );
 
-                // Fonctionnalités
+                //Fonctionnalités
                 let featuresHtml = '';
                 if (data.features && data.features.length) {
+                    // On ouvre une rangée
+                    featuresHtml = '<div class="row">'; 
+                    
                     data.features.forEach(f => {
-                    featuresHtml += `
-                    <p class="mb-2">
-                        <i class="fa-solid fa-check text-success me-2"></i>
-                        ${f.title}
-                    </p>`;
-                });
+                        featuresHtml += `
+                        <div class="col-md-6">
+                            <p class="mb-2">
+                                <i class="fa-solid fa-check text-success me-2"></i>
+                                ${f.title}
+                            </p>
+                        </div>`;
+                    });
+
+                    featuresHtml += '</div>'; // On ferme la rangée
                 } else {
                     featuresHtml = '<p class="text-muted">Aucune fonctionnalité.</p>';
                 }
@@ -319,17 +327,6 @@
                 $('#modal-docs').html(docsHtml);
 
                
-
-                // // Tarifs & Offres
-                // const offers = data.subscription_types || data.subscriptionTypes || [];
-                // renderOffers(offers);
-
-                // // Footer
-                // $('#modal-footer-price').text(formatPrix(data.price));
-                // $('#btn-add-cart').attr('onclick', `addToCart(${data.id})`);
-
-                // $('#btn-add-cart').attr('onclick', `addToCart(${data.id})`);
-
                 // Tarifs & Offres
                 const offers = data.subscription_types || data.subscriptionTypes || [];
                 renderOffers(offers);

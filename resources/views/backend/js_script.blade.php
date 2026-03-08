@@ -174,24 +174,52 @@
       
 
         /* ON CHARGE LES prix ENREGISTRES */
-        if (data.prix && data.prix.length) {
+        $('#prix-wrapper').find('.prix-item').not('.prix-master').remove(); //Supprime les lignes ajoutées dynamiquement
+        $('.prix-master').find('input, select').val('').css('border-color', ''); //Reset de la ligne de base
 
-          const firstPrix = data.prix[0];
-          fill_prix_line($('.prix-master'), firstPrix);
+        // if (data.prix && data.prix.length) {
 
-          $('.prix-master').find('.prix-id').val(firstPrix.id);
-          $('.prix-master').find('input, select').css('border-color', '#025f07');
+        //   const firstPrix = data.prix[0];
+        //   fill_prix_line($('.prix-master'), firstPrix);
 
-          for (let i = 1; i < data.prix.length; i++) {
-            add_ligne_prix();
+        //   $('.prix-master').find('.prix-id').val(firstPrix.id);
+        //   $('.prix-master').find('input, select').css('border-color', '#025f07');
 
-            let row = $('#prix-wrapper .prix-item:last');
+        //   for (let i = 1; i < data.prix.length; i++) {
+        //     add_ligne_prix();
 
-            fill_prix_line($('#prix-wrapper .prix-item:last'), data.prix[i]);
-            row.find('.prix-id').val(data.prix[i].id);
+        //     let row = $('#prix-wrapper .prix-item:last');
 
-            //on change ici la couleur des champs pour les données chargées depuis la base
-            $('#prix-wrapper .prix-item:last').find('input, select').css('border-color', '#025f07');
+        //     fill_prix_line($('#prix-wrapper .prix-item:last'), data.prix[i]);
+        //     row.find('.prix-id').val(data.prix[i].id);
+
+        //     //on change ici la couleur des champs pour les données chargées depuis la base
+        //     $('#prix-wrapper .prix-item:last').find('input, select').css('border-color', '#025f07');
+        //   }
+        // }
+
+        if (data.subscription_types  && data.subscription_types .length) {
+          // 1. Nettoyage
+          $('#prix-wrapper').find('.prix-item').not('.prix-master').remove();
+
+          // 2. Remplissage de la première ligne (master)
+          const firstPrix = data.subscription_types [0];
+          const $master = $('.prix-master');
+          
+          fill_prix_line($master, firstPrix);
+
+          $master.find('.prix-id').val(firstPrix.id);
+          $master.find('input, select').css('border-color', '#025f07');
+
+          // 3. Ajout des lignes suivantes
+          for (let i = 1; i < data.subscription_types .length; i++) {
+              add_ligne_prix(); 
+              
+              let $row = $('#prix-wrapper .prix-item:last'); // On récupère la ligne fraîchement créée
+              
+              fill_prix_line($row, data.subscription_types [i]);
+              $row.find('.prix-id').val(data.subscription_types [i].id);
+              $row.find('input, select').css('border-color', '#025f07');
           }
         }
 
@@ -228,14 +256,17 @@
     }
   }
 
-   function fill_prix_line(row, price) {
+  function fill_prix_line($row, data) {
 
-    row.find('.type-abon').val(price.type);
-
-    row.find('input[name="prix[]"]').val(price.title);
-    row.find('input[name="titre_abon[]"]').val(price.title);
-	
-	  row.find('.type_statut').val(price.type);
+    $row.find('select[name="type_abon[]"]').val(data.type);
+    
+    let valAchat = (data.achat_unique === true || data.achat_unique == 1) ? "1" : "0";
+    $row.find('select[name="type_statut[]"]').val(valAchat);
+    $row.find('input[name="prix[]"]').val(data.price);
+    $row.find('input[name="titre_abon[]"]').val(data.titre);
+    $row.find('textarea[name="details_offre[]"]').val(data.description);
+    
+    $row.find('.prix-id').val(data.id);
 
   }
 
@@ -374,19 +405,31 @@
   }
 
 
-   function add_ligne_prix() {
-    let item = $('.prix-master').clone();
+  function add_ligne_prix() {
+      let item = $('.prix-master').clone();
 
-    //On Nettoie
-    item.removeClass('prix-master');
+      // supprimer classe master
+      item.removeClass('prix-master');
 
-    item.find('select').val('').css('border-color', '');
-    item.find('input, select').val('').css('border-color', '');
+      // nettoyer champs
+      item.find('input, select, textarea').val('');
 
-    //on supprime la colonne boutons dans les lignes clonées
-    item.find('.col-md-1').remove();
+      // supprimer boutons dans les clones
+      item.find('.col-md-2').remove();
 
-    $('#prix-wrapper').append(item);
+      // compter nombre d'offres
+      let count = $('.prix-item').length + 1;
+
+      // créer titre offre
+      let divider = `
+          <div class="divider my-2">
+              <div class="divider-text fw-bold">Offre N°${count}</div>
+          </div>
+      `;
+
+      // ajouter
+      $('#prix-wrapper').append(divider);
+      $('#prix-wrapper').append(item);
   }
 
   function delete_ligne_document() {
@@ -398,13 +441,18 @@
     }
   }
 
-  function delete_ligne_prix() {
-    let items = $('.prix-item');
+  function delete_ligne_prix(){
 
-    //Ne jamais supprimer la ligne principale
-    if (items.length > 1) {
-      items.last().remove();
-    }
+      let items = $('.prix-item');
+
+      if(items.length > 1){
+
+          // supprimer dernière offre
+          items.last().remove();
+
+          // supprimer dernier divider
+          $('#prix-wrapper .divider').last().remove();
+      }
   }
 
 
