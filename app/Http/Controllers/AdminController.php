@@ -183,8 +183,8 @@ class AdminController extends Controller
                 ]);
             }
         }
-// NIAMIEN PRIX
- if ($request->filled('type_abon')) {
+        // NIAMIEN PRIX
+        if ($request->filled('type_abon')) {
 
             //IDs envoyés par le formulaire
             $sentIds = collect($request->prix_id)->filter();

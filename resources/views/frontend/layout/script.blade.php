@@ -1,43 +1,48 @@
 
 <script>
-function escapeHtml(str) {
-    if (!str) return '';
-    return String(str).replace(/[&<>"']/g, m => ({
-        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
-    }[m]));
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>"']/g, m => ({
+            '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+        }[m]));
     }
 
     function parseBullets(desc) {
-    if (!desc) return [];
-    return String(desc)
-        .split(/\r?\n/)
-        .map(l => l.trim())
-        .filter(Boolean)
-        .map(l => l.replace(/^[-•]\s*/, ''));
+        if (!desc) return [];
+
+        return String(desc)
+            .split(/\r?\n/)
+            .map(l => l.trim())
+            .filter(Boolean)
+            .map(l => l.replace(/^[-•]\s*/, ''));
     }
     
     function formatPriceOnly(val) {
-    const n = Number(val);
-    return (!n || n <= 0) ? 'Sur devis' : n.toLocaleString('fr-FR') + ' FCFA';
+        const n = Number(val);
+        return (!n || n <= 0) ? 'Sur devis' : n.toLocaleString('fr-FR') + ' FCFA';
     }
 
     function getSuffix(type, achatUnique) {
-    if (achatUnique) return 'Achat unique';
-    if (type === 'MENSUEL') return 'mois';
-    if (type === 'ANNUEL') return 'an';
-    return '';
+        if (achatUnique) return 'Achat unique';
+        if (type === 'MENSUEL') return 'mois';
+        if (type === 'ANNUEL') return 'an';
+        return '';
     }
 
     function formatPriceWithSuffix(val, type, achatUnique) {
-    const base = formatPriceOnly(val);
-    if (base === 'Sur devis') return base;
-    const suf = getSuffix(type, achatUnique);
-    return suf ? `${base} / ${suf}` : base;
+        const base = formatPriceOnly(val);
+
+        if (base === 'Sur devis') return base;
+        const suf = getSuffix(type, achatUnique);
+
+        return suf ? `${base} / ${suf}` : base;
     }
 
     let selectedOffer = null;
 
     function renderOffers(subscriptionTypes) {
+
         const container = document.getElementById('modal-offers');
         if (!container) return;
 
@@ -51,13 +56,13 @@ function escapeHtml(str) {
             return;
         }
 
-        // Trier (optionnel)
+        //Trier (optionnel)
         subscriptionTypes = subscriptionTypes.slice().sort((a,b) => Number(a.price) - Number(b.price));
 
-        // ✅ règle : suffix dans tab4 uniquement si plusieurs tarifs
+        //Règle : suffix dans tab4 uniquement si plusieurs tarifs
         const showSuffixInTab = subscriptionTypes.length > 1;
 
-        // défaut : 1ère offre sélectionnée
+        //Défaut : 1ère offre sélectionnée
         selectedOffer = subscriptionTypes[0];
 
         // footer : on peut toujours afficher avec suffix si pertinent
@@ -69,7 +74,7 @@ function escapeHtml(str) {
         container.innerHTML = subscriptionTypes.map((s, idx) => {
             const bullets = parseBullets(s.description);
 
-            // ✅ tab4 : suffix seulement si plusieurs offres
+            //tab4 : suffix seulement si plusieurs offres
             const priceText = showSuffixInTab
             ? formatPriceWithSuffix(s.price, s.type, s.achat_unique)
             : formatPriceOnly(s.price);
@@ -83,23 +88,23 @@ function escapeHtml(str) {
                 data-offer-title="${escapeHtml(s.titre || s.type || 'Offre')}">
 
                 <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start gap-3">
-                    <div>
-                    <h4 class="fw-bold mb-2">${escapeHtml(s.titre || s.type || 'Offre')}</h4>
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <div class="text-start">
+                            <h4 class="fw-bold mb-2">${escapeHtml(s.titre || s.type || 'Offre')}</h4>
 
-                    ${bullets.length ? `
-                        <ul class="mb-0">
-                        ${bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}
-                        </ul>
-                    ` : (s.description ? `<p class="text-muted mb-0">${escapeHtml(s.description)}</p>` : '')}
-                    </div>
+                            ${bullets.length ? `
+                                <ul class="mb-0">
+                                ${bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}
+                                </ul>
+                            ` : (s.description ? `<p class="text-muted mb-0">${escapeHtml(s.description)}</p>` : '')}
+                        </div>
 
-                    <div class="text-end" style="min-width: 210px;">
-                    <div class="fw-bold" style="color:#1a474a; font-size:28px;">
-                        ${priceText}
+                        <div class="text-end" style="min-width: 210px;">
+                            <div class="fw-bold" style="color:#1a474a; font-size:25px;">
+                                ${priceText}
+                            </div>
+                        </div>
                     </div>
-                    </div>
-                </div>
                 </div>
             </div>
             `;
@@ -109,148 +114,144 @@ function escapeHtml(str) {
         container.querySelectorAll('.offer-card').forEach(card => {
             card.addEventListener('click', () => {
             container.querySelectorAll('.offer-card').forEach(c => c.classList.remove('is-selected'));
-            card.classList.add('is-selected');
+                card.classList.add('is-selected');
 
-            selectedOffer = {
-                id: Number(card.dataset.offerId),
-                price: Number(card.dataset.offerPrice),
-                type: card.dataset.offerType,
-                achat_unique: card.dataset.offerAchat === '1',
-                titre: card.dataset.offerTitle
-            };
+                selectedOffer = {
+                    id: Number(card.dataset.offerId),
+                    price: Number(card.dataset.offerPrice),
+                    type: card.dataset.offerType,
+                    achat_unique: card.dataset.offerAchat === '1',
+                    titre: card.dataset.offerTitle
+                };
 
-            // footer : prix + suffix (logique normale)
-            document.getElementById('modal-footer-price').textContent =
-                formatPriceWithSuffix(selectedOffer.price, selectedOffer.type, selectedOffer.achat_unique);
-            
-            $('#btn-add-cart').data('offer-id', selectedOffer.id);
+                // footer : prix + suffix (logique normale)
+                document.getElementById('modal-footer-price').textContent =
+                    formatPriceWithSuffix(selectedOffer.price, selectedOffer.type, selectedOffer.achat_unique);
+                
+                $('#btn-add-cart').data('offer-id', selectedOffer.id);
             });
         });
         
-}
-
-</script>
-
-<script>
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-    }
-  });
-
-  function moneyFCFA(n) {
-    const v = Number(n || 0);
-    return v.toLocaleString('fr-FR') + ' FCFA';
-  }
-
-  function offerSuffix(item) {
-    // Affichage dans le panier
-    if (item.achat_unique) return 'Achat unique';
-    if (item.offer_type === 'MENSUEL') return 'mois';
-    if (item.offer_type === 'ANNUEL') return 'an';
-    return '';
-  }
-
-  function openCart() {
-    document.getElementById('cartBar')?.classList.add('active');
-  }
-  function closeCart() {
-    document.getElementById('cartBar')?.classList.remove('active');
-  }
-
-  function renderCart(cart) {
-    document.getElementById('cart-count').textContent = cart.count || 0;
-    document.getElementById('cart-total').textContent = cart.total_label || '0 FCFA';
-    document.getElementById('cart-badge-count').textContent = cart.count || 0;
-
-
-    const container = document.getElementById('cart-items');
-    if (!cart.items || !cart.items.length) {
-      container.innerHTML = `<div class="py-[30px] px-[25px] text-edgray">Panier vide</div>`;
-      return;
     }
 
-    container.innerHTML = cart.items.map(item => {
-      const suf = offerSuffix(item);
-      const priceText = suf ? `${moneyFCFA(item.price)} / ${suf}` : moneyFCFA(item.price);
-      const title = item.offer_title ? `${item.name} — ${item.offer_title}` : item.name;
+    function offerSuffix(item) {
+        // Affichage dans le panier
+        if (item.achat_unique) return 'Achat unique';
+        if (item.offer_type === 'MENSUEL') return 'mois';
+        if (item.offer_type === 'ANNUEL') return 'an';
 
-      return `
-        <div class="flex items-center gap-[20px] py-[22px] px-[25px] border-b border-edgray/20">
-          <img src="${item.image}" alt="Cart Item" class="rounded-[10px] shrink-0 w-[64px] h-[64px] object-cover">
-          <div class="grow">
-            <h6 class="font-medium text-[16px] text-edblue">${title}</h6>
-            <div class="flex items-center justify-between">
-              <h6 class="font-medium text-edgray">${priceText}</h6>
-              <span class="text-edgray">x${item.qty}</span>
+        return '';
+    }
+
+    function openCart() {
+        document.getElementById('cartBar')?.classList.add('active');
+    }
+    function closeCart() {
+        document.getElementById('cartBar')?.classList.remove('active');
+    }
+
+    function renderCart(cart) {
+        $('#cart-count').text(cart.count || 0);
+        $('#cart-total').text(cart.total_label || '0 FCFA');
+        $('#cart-badge-count').text(cart.count || 0);
+        $('#cart-badge-count2').text(cart.count || 0);
+
+        const container = document.getElementById('cart-items');
+        if (!cart.items || !cart.items.length) {
+            container.innerHTML = `<div class="py-[30px] px-[25px] text-edgray">Panier vide</div>`;
+            return;
+        }
+
+        if(cart.items.length > 0){
+            $('#passer_commande').show();
+        }
+
+        container.innerHTML = cart.items.map(item => {
+            const suf = offerSuffix(item);
+            const priceText = suf ? `${formatPrix(item.price)} / ${suf}` : formatPrix(item.price);
+            // const title = item.offer_title ? `${item.name} — ${item.offer_title}` : item.name;
+            const title = item.offer_title ? item.name : item.name;
+
+            return `
+            <div class="flex items-center gap-[20px] py-[22px] px-[25px] border-b border-edgray/20">
+                <img src="${item.image}" alt="Cart Item" class="rounded-[10px] shrink-0 w-[64px] h-[64px] object-cover">
+                <div class="grow">
+                    <h6 class="font-medium text-[16px] text-edblue">${title}</h6>
+                    <div class="flex items-center justify-between">
+                        <h6 class="font-medium text-edgray">${priceText}</h6>
+                        <span class="text-edgray">x${item.qty}</span>
+                    </div>
+                </div>
+                <button onclick="removeFromCart('${item.key}')" class="text-[20px] text-danger shrink-0 hover:text-edpurple">×</button>
             </div>
-          </div>
-          <button onclick="removeFromCart('${item.key}')"
-                  class="text-[20px] text-edgray shrink-0 hover:text-edpurple">×</button>
-        </div>
-      `;
-    }).join('');
-  }
-
-  async function refreshCart() {
-    try {
-      const res = await fetch("{{ route('cart.get') }}", { headers: { 'Accept': 'application/json' }});
-      const data = await res.json();
-      renderCart(data);
-    } catch (e) {
-      console.error(e);
+            `;
+        }).join('');
     }
-  }
 
-  function addToCart(productId, subscriptionTypeId = null) {
-    $.ajax({
-      url: "{{ route('cart.add') }}",
-      type: "POST",
-      dataType: "json",
-      data: {
-        _token: "{{ csrf_token() }}",
-        product_id: productId,
-        subscription_type_id: subscriptionTypeId
-      },
-      success: function (data) {
-        renderCart(data);
-        openCart();
-      },
-      // error: function (xhr) {
-      //   alert("Impossible d'ajouter au panier");
-      //   console.error(xhr.responseText);
-      // }
-      error: function (xhr) {
-        console.log('STATUS', xhr.status);
-        console.log('RESPONSE', xhr.responseText);
-        alert("Impossible d'ajouter au panier");
-      }
+    function refreshCart() {
+        $.ajax({
+            url: "{{ route('cart.get') }}",
+            type: "GET",
+            success: function(data){
+                console.log(data);
+                renderCart(data);
+            }
+        });
+    }
+
+    function addToCart(productId, subscriptionTypeId = null) {
+        $.ajax({
+            url: "{{ route('cart.add') }}",
+            type: "POST",
+            dataType: "json",
+            data: {
+                _token: "{{ csrf_token() }}",
+                product_id: productId,
+                subscription_type_id: subscriptionTypeId
+            },
+            success: function (data) {
+                renderCart(data);
+                openCart();
+
+                //alert('ok');
+                //ferme le modal description
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('simpleModal')).hide();
+            },
+            error: function (xhr) {
+                console.log('STATUS', xhr.status);
+                console.log('RESPONSE', xhr.responseText);
+                alert("Impossible d'ajouter au panier");
+            }
+        });
+    }
+
+    function removeFromCart(key) {
+        $.ajax({
+        url: "{{ route('cart.remove') }}",
+        type: "POST",
+        dataType: "json",
+        data: {
+            _token: "{{ csrf_token() }}",
+            key: key
+        },
+        success: function (data) {
+            renderCart(data);
+            renderPanier(data);
+        },
+        error: function (xhr) {
+            alert("Impossible de supprimer l'article");
+            console.error(xhr.responseText);
+        }
+        });
+    }
+
+    $(document).ready(function(){
+        refreshCart();
+
+        // $.get("{{ route('cart.get') }}", function(data){
+        //     renderPanier(data);
+        // });
     });
-  }
-
-  function removeFromCart(key) {
-    $.ajax({
-      url: "{{ route('cart.remove') }}",
-      type: "POST",
-      dataType: "json",
-      data: {
-        _token: "{{ csrf_token() }}",
-        key: key
-      },
-      success: function (data) {
-        renderCart(data);
-      },
-      error: function (xhr) {
-        alert("Impossible de supprimer l'article");
-        console.error(xhr.responseText);
-      }
-    });
-  }
-
-  // Charger panier au chargement
-  document.addEventListener('DOMContentLoaded', () => {
-    refreshCart();
-  });
 </script>
 
 
@@ -261,7 +262,12 @@ function escapeHtml(str) {
         const form = document.querySelector('.modal_form');
         if (form) form.reset();
 
-        //alert(typeof $);
+        //reinitialisation des onglets
+        $('.tab-content .tab-pane').removeClass('show active');
+        $('#tab1').addClass('show active');
+
+        $('.nav-link').removeClass('active');
+        $('.nav-link[data-bs-target="#tab1"]').addClass('active');
         
         $.ajax({
             url: "{{ route('prod.get_produit', ':id') }}".replace(':id', id),
@@ -334,15 +340,16 @@ function escapeHtml(str) {
                 // Si on a des offres, renderOffers a déjà mis le footer (ex: Achat unique)
                 // Sinon, fallback = prix produit
                 if (!offers || offers.length === 0) {
-                $('#modal-footer-price').text(formatPrix(data.price));
-                $('#btn-add-cart').data('offer-id', null);
+                    $('#modal-footer-price').text(formatPrix(data.price));
+                    $('#btn-add-cart').data('offer-id', null);
                 }
 
-                // ✅ Un seul handler click (pas de onclick écrasé)
+                //Un seul handler click (pas de onclick écrasé)
                 $('#btn-add-cart').off('click').on('click', function () {
-                const productId = $(this).data('product-id');
-                const offerId = $(this).data('offer-id') || null;
-                addToCart(productId, offerId);
+                    const productId = $(this).data('product-id');
+                    const offerId = $(this).data('offer-id') || null;
+
+                    addToCart(productId, offerId);
                 });
 
 
@@ -361,4 +368,106 @@ function escapeHtml(str) {
         const n = Number(val);
         return n > 0 ? n.toLocaleString('fr-FR') + ' FCFA' : 'Sur devis';
     }
+
+    //pour la page panier
+    function renderPanier(cart)
+    {
+        const container = document.getElementById('checkout-cart-items');
+
+        if(!cart.items.length){
+            container.innerHTML = `
+            <tr>
+                <td colspan="5" class="text-center py-4">
+                    Panier vide
+                </td>
+            </tr>`;
+            return;
+        }
+
+        container.innerHTML = cart.items.map(item => {
+
+            const total = item.price * item.qty;
+
+            return `
+            <tr>
+
+                <td class="flex items-center gap-3">
+
+                    <img src="${item.image}" width="60">
+
+                    ${item.name}
+
+                </td>
+
+                <td>
+                    ${formatPriceOnly(item.price)}
+                </td>
+
+                <td>
+
+                    <div class="flex items-center gap-2">
+
+                        <button onclick="updateQty('${item.key}', -1)"
+                            class="px-2 py-1 border rounded fw-bold">
+                            -
+                        </button>
+
+                        <span>${item.qty}</span>
+
+                        <button onclick="updateQty('${item.key}', 1)"
+                            class="px-2 py-1 border rounded fw-bold">
+                            +
+                        </button>
+
+                    </div>
+
+                </td>
+
+                <td>
+                    ${formatPriceOnly(total)}
+                </td>
+
+                <td>
+
+                    <button onclick="removeFromCart('${item.key}')" class="text-danger fw-bold">
+                        X
+                    </button>
+
+                </td>
+
+            </tr>
+            `;
+        }).join('');
+
+        document.getElementById('checkout-total').innerText = cart.total_label;
+    }
+
+    function updateQty(key, change)
+    {
+        $.ajax({
+            url: "{{ route('cart.update') }}",
+            type: "POST",
+            data:{
+                _token: "{{ csrf_token() }}",
+                key:key,
+                change:change
+            },
+            success:function(data){
+                renderPanier(data);
+                //mise a jour du mini panier a droite
+                renderCart(data);
+            },
+            error:function(xhr){
+                console.log(xhr.responseText);
+            }
+
+        });
+    }
+
+    $.ajaxSetup({
+        headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    });
+    
 </script>

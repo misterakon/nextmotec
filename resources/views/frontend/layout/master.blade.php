@@ -7,94 +7,6 @@
 
 </head>
 
-{{-- <script>
-    function openProductModal(productId) {
-
-        // Sécurité : vider le contenu précédent
-        document.getElementById('modalTitle').innerText = 'Chargement...';
-        document.getElementById('modalShortDesc').innerText = '';
-        document.getElementById('modalLongDesc').innerText = '';
-        document.getElementById('modalFeatures').innerHTML = '';
-        document.getElementById('modalDocs').innerHTML = '';
-        document.getElementById('modalPrice').innerText = '';
-
-        fetch(``{{ url('/products') }}/${productId}/details``)
-            .then(response => response.json())
-            .then(data => {
-
-                /* ===== Header ===== */
-                document.getElementById('modalTitle').innerText = data.name;
-                document.getElementById('modalShortDesc').innerText = data.short_desc ?? '';
-                document.getElementById('modalLongDesc').innerText = data.long_desc ?? '';
-
-                /* ===== Prix ===== */
-                document.getElementById('modalPrice').innerText =
-                    data.price > 0
-                        ? new Intl.NumberFormat('fr-FR').format(data.price) + ' FCFA'
-                        : 'Sur devis';
-
-                /* ===== Fonctionnalités ===== */
-                let featuresHtml = '';
-                if (data.features.length > 0) {
-                    data.features.forEach(feature => {
-                        featuresHtml += `
-                            <li class="mb-2">
-                                <i class="fa-solid fa-check text-success me-2"></i>
-                                ${feature.title}
-                            </li>`;
-                    });
-                } else {
-                    featuresHtml = '<p class="text-muted">Aucune fonctionnalité.</p>';
-                }
-                document.getElementById('modalFeatures').innerHTML = featuresHtml;
-
-                /* ===== Documentation ===== */
-                let docsHtml = '';
-                if (data.docs.length > 0) {
-                    data.docs.forEach(doc => {
-                        docsHtml += `
-                            <a href="${doc.url ?? '#'}"
-                            target="_blank"
-                            class="list-group-item list-group-item-action d-flex align-items-center rounded mb-2 bg-light">
-                                <i class="fa-solid fa-file text-danger me-2"></i>
-                                <span class="fw-medium">${doc.title}</span>
-                            </a>`;
-                    });
-                } else {
-                    docsHtml = '<p class="text-muted">Aucune documentation.</p>';
-                }
-                document.getElementById('modalDocs').innerHTML = docsHtml;
-
-                /* ===== Ouvrir le modal ===== */
-                const modal = new bootstrap.Modal(
-                    document.getElementById('simpleModal')
-                );
-                modal.show();
-            })
-            .catch(error => {
-                console.error(error);
-                alert('Erreur lors du chargement du produit');
-            });
-    }
-</script> --}}
-{{-- <script>
-    const PRODUCT_DETAILS_URL = @json(route('products.details', ['product' => ':id']));
-</script>
-
-<script>
-    window.openProductModal = function (productId) {
-        const url = PRODUCT_DETAILS_URL.replace(':id', productId);
-
-        fetch(url, { headers: { 'Accept': 'application/json' } })
-            .then(res => res.json())
-            .then(data => {
-                const modal = new bootstrap.Modal(
-                    document.getElementById('simpleModal')
-                );
-                modal.show();
-            });
-    };
-</script> --}}
 <script>
     async function openProductModal(productId) {
         const url = window.PRODUCT_MODAL_URL.replace('__ID__', productId);
@@ -124,17 +36,11 @@
     }
 </script>
 
-{{-- <script>
-  window.PRODUCT_MODAL_URL = @json(route('products.modal', ['product' => '__ID__']));
-</script> --}}
-
-
-
 {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<body>
+<body class="page-wrapper">
     <div class="ed-overlay group">
         <div class="fixed inset-0 z-[100] group-[.active]:bg-edblue/80 duration-[400ms] pointer-events-none group-[.active]:pointer-events-auto"></div>
     </div>
@@ -173,7 +79,7 @@
     </header>
     <!-- HEADER SECTION END -->
 
-    <main>
+    <main class="page-content">
         @yield('main-content')
     </main>
 

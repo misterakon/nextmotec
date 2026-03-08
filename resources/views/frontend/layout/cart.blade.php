@@ -3,8 +3,9 @@
 
     <!-- heading -->
     <div class="flex items-center justify-between px-[25px] border-b border-edgray/20 pb-[23px] pt-[22px]">
-      <h5 class="text-[20px]">Mon panier</h5>
-      <h6>(<span id="cart-count">0</span> items)</h6>
+      <h5 class="text-[20px] fw-bold">Mon panier</h5>
+      <h6>(<span id="cart-count" class="fw-bold">0</span>)</h6>
+      <h6><span id="close" class="fw-bold cursor-pointer" onclick="closeCart()">X</span></h6>
     </div>
 
     <!-- cart items -->
@@ -14,21 +15,26 @@
 
     <!-- cart bottom -->
     <div class="mt-auto px-[25px] mb-[30px]">
-      <div class="flex items-center justify-between font-medium text-[18px] text-edblue mb-[33px]">
+      <div class="flex items-center justify-between font-medium text-[18px] text-edblue mb-[33px] fw-bold">
         <span>Total</span>
         <span id="cart-total">0 FCFA</span>
       </div>
 
       <div class="space-y-[15px]">
-        <a href="#" {{-- route('checkout.index')--}}
-           class="ed-btn w-full !rounded-[10px] !bg-transparent border border-edblue !text-edblue hover:!bg-edblue hover:!text-white">
+        <a href="{{ route('panier') }}" 
+           class="ed-btn w-full !rounded-[10px] color:!text-white"
+           style="background-color: #af2c05 !important">
           Voir le panier
         </a>
 
-        <a href="#" {{-- route('checkout.index')--}}
-           class="ed-btn w-full !rounded-[10px]">
-          Procéder au paiement
-        </a>
+        <form action="{{ route('passer_commande') }}" method="POST">
+            @csrf
+            <button class="ed-btn w-full !h-[56px] !rounded-[8px] hover:!text-white" id="passer_commande"
+                style="background-color:#1a474a; border-color:#1a474a">
+                Procéder au paiement
+            </button>
+        </form>
+
       </div>
     </div>
 

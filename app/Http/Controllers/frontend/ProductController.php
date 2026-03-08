@@ -58,7 +58,7 @@ class ProductController extends Controller
         $product->load(['category', 'features', 'documentations']);
 
         return view('frontend.modal_description', compact('product'));
-        }
+    }
 
 
      /**

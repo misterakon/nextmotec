@@ -55,7 +55,7 @@
                                     <!-- image -->
                                     <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
                                         <img src="{{ $product->image
-                                            ? asset('storage/app/public/'.$product->image)
+                                            ? asset('storage/app/public/products/'.$product->image)
                                             : asset('public/frontend/assets/img/course-1.jpg') }}"
                                             alt="{{ $product->name }}"
                                             class="aspect-[330/223] w-full object-cover group-hover:scale-110">
@@ -116,6 +116,7 @@
 
         </div>
     </section>
+
 
 
     <!-- TESTIMONIAL SECTION START -->
@@ -248,11 +249,11 @@
     <!-- TESTIMONIAL SECTION END -->
 
     {{-- RSSOURCES --}}
-    {{-- <section class="py-[50px] xl:py-[80px] md:py-[60px]  bg-top bg-no-repeat">
+    <section class="py-[50px] xl:py-[80px] md:py-[60px]  bg-top bg-no-repeat">
         <div class="mx-[19.71%] xxxl:mx-[14.71%] xxl:mx-[9.71%] xl:mx-[5.71%] md:mx-[12px]">
             <!-- section heading -->
             <div class="text-center mb-[46px] lg:mb-[36px] xxs:mb-[26px]">
-                <h6 class="ed-section-sub-title">academic classes</h6> 
+                {{-- <h6 class="ed-section-sub-title">academic classes</h6> --}}
                 <h2 class="ed-section-title">Ressources & Actualités</h2>
             </div>
 
@@ -299,7 +300,7 @@
                 </div>
             </div>
         </div>
-    </section> --}}
+    </section>
 
     <a href="https://wa.me/22501020304" target="_blank" class="float" title="Contactez-nous via WhatsApp">
         <i class="fa-brands fa-whatsapp fa-2x"></i>

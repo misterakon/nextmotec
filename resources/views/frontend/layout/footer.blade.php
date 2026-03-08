@@ -22,3 +22,39 @@
     <script src="{{ asset('public/frontend/assets/js/main.js') }}"></script>
     <script src="{{ asset('public/frontend/assets/js/accordion.js') }}"></script>
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+
+    <script>
+        // Charger panier au chargement
+        $(document).ready(function(){
+            $('#passer_commande').hide();
+
+            refreshCart();
+
+            $.get("{{ route('cart.get') }}", function(data){
+                renderPanier(data);
+            });
+        });
+
+        function closeCart(){
+            document.getElementById("cartBar").classList.remove("active");
+            $(".ed-overlay").removeClass("active");
+            $(".page-wrapper").css("overflow", "");
+        }
+
+        function toggleUserMenu(event)
+        {
+            event.stopPropagation();
+
+            const menu = document.getElementById('userMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', function(){
+            const menu = document.getElementById('userMenu');
+
+            if(menu){
+                menu.classList.add('hidden');
+            }
+        });
+
+    </script>

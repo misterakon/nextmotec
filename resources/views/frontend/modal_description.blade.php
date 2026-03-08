@@ -58,10 +58,8 @@
 
           <!-- Tarifs -->
           <div class="tab-pane fade" id="tab4">
-            <div class="card border rounded">
-              <div class="card-body">
-                <div id="modal-offers"></div>
-              </div>
+            <div class="card-body">
+              <div id="modal-offers"></div>
             </div>
           </div>
 
