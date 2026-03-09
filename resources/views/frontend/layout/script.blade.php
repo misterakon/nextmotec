@@ -636,7 +636,6 @@
             card.addEventListener('click', () => {
                 container.querySelectorAll('.offer-card').forEach(c => c.classList.remove('is-selected'));
                 card.classList.add('is-selected');
-
                 selectedOffer = {
                     id: Number(card.dataset.offerId),
                     price: Number(card.dataset.offerPrice),
