@@ -23,7 +23,7 @@
 
                 <!-- Tous -->
                 <button class="hover:bg-edpurple hover:text-white active" data-filter="all">
-                    Tous
+                    Pour Tous
                 </button>
 
                 <!-- Customer types dynamiques -->
@@ -31,7 +31,7 @@
                     <button
                         class="hover:bg-edpurple hover:text-white"
                         data-filter=".{{ $type->slug }}">
-                        {{ ucfirst($type->name) }}
+                        {{ "Pour " . ucfirst($type->name) }}
                     </button>
                 @endforeach
             </div>
@@ -124,7 +124,7 @@
             <div class="flex md:flex-col gap-[30px]">
                 <!-- heading -->
                 <div class="max-w-[370px] md:max-w-full shrink-0">
-                    <h6 class="ed-section-sub-title">Temoignages</h6>
+                    <h6 class="ed-section-sub-title" id="temoignages">Temoignages</h6>
                     <h2 class="ed-section-title mb-[36px] md:mb-[26px]">Ce que disent nos clients</h2>
                     <!-- slider nav -->
                     <div class="ed-2-testimonial-slider-nav flex gap-[15px] *:w-[40px] *:h-[40px] *:rounded-full *:border *:border-[#808080]/20 *:text-edpurple *:text-[18px]">

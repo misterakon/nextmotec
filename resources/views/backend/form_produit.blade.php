@@ -102,8 +102,8 @@
 
                                     <select class="form-select type-statut" name="type_statut[]" required>
                                         <option selected>Type d'achat</option>
-                                        <option value="1">Multiple</option>
-                                        <option value="0">Unique</option>
+                                        <option value="0">Multiple</option>
+                                        <option value="1">Unique</option>
                                     </select>
                                 </div>
 

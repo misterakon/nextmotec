@@ -1,10 +1,26 @@
+@php
+    $labels = [
+        'logiciels' => 'LOGICIELS',
+        'services & templates' => 'TEMPLATES',
+        'formations & documentation' => 'FORMATION',
+    ];
+@endphp
+
 <div class="ed-header-nav-container">
     <ul class="to-go-to-sidebar-in-mobile ed-header-nav flex lg:flex-col gap-x-[43px] xl:gap-x-[33px] font-kanit text-[17px] font-normal">
-        <li><a href="#"><b>LOGICIELS</b></a></li>
-        <li><a href="#"><b>FORMATION</b></a></li>
-        <li><a href="#"><b>TEMPLATES</b></a></li>
-        <li><a href="#"><b>GUIDE D'ACHAT</b></a></li>
-        <li><a href="#"><b>TEMOIGNAGES</b></a></li>
+        @foreach($categories as $category)
+            @php
+                $key = strtolower(trim($category->name));
+                $label = $labels[$key] ?? strtoupper($category->name);
+            @endphp
+
+            <li>
+                <a href="#{{ $category->slug }}">
+                    <b>{{ $label }}</b>
+                </a>
+            </li>
+        @endforeach
+        <li><a href="#temoignages"><b>TEMOIGNAGES</b></a></li>
         {{-- <li><a href="{{route('login')}}"><b>SE CONNECTER</b></a></li> --}}
         
         {{-- <li class="has-sub-menu relative">
