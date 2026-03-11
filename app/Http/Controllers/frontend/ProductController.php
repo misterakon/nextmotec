@@ -11,48 +11,100 @@ use App\Models\Temoignage;
 
 class ProductController extends Controller
 {
+    // public function index()
+    // {
+    //     $products = Product::with('category', 'customerType', 'subscriptionTypes')
+    //         ->where('active', '1')
+    //         ->orderBy('created_at', 'desc')
+    //         ->get();
+
+    //     //    Catégories + produits actifs + relations utiles
+    //     $categories = Category::with([
+    //         'products' => function ($q) {
+    //             $q->where('active', true)
+    //                 ->with(['customerType', 'subscriptionTypes']) 
+    //                 ->orderBy('created_at');
+    //         }])
+    //         ->orderBy('name')
+    //         ->get();
+
+    //           // Charger les temoignages 
+    //     $temoignages = Temoignage::where('active', '1')
+    //         ->orderBy('created_at', 'desc')
+    //         ->get();
+
+
+    //     $customertypes = CustomerType::orderBy('name')->get();
+    //     return view('frontend.index', compact('products', 'customertypes', 'categories','temoignages'));
+    // }
     public function index()
     {
-        $products = Product::with('category', 'customerType', 'subscriptionTypes')
-            ->where('active', '1')
+        $products = Product::with(['category', 'customerTypes', 'subscriptionTypes'])
+            ->where('active', true)
             ->orderBy('created_at', 'desc')
             ->get();
 
-    //    Catégories + produits actifs + relations utiles
         $categories = Category::with([
             'products' => function ($q) {
                 $q->where('active', true)
-                    ->with(['customerType', 'subscriptionTypes']) 
-                    ->orderBy('created_at');
-            }])
-            ->orderBy('name')
-            ->get();
+                ->with(['customerTypes', 'subscriptionTypes'])
+                ->orderBy('created_at');
+            }
+        ])
+        ->orderBy('name')
+        ->get();
 
-              // Charger les temoignages 
-        $temoignages = Temoignage::where('active', '1')
+        $temoignages = Temoignage::where('active', true)
             ->orderBy('created_at', 'desc')
             ->get();
 
-
         $customertypes = CustomerType::orderBy('name')->get();
-        return view('frontend.index', compact('products', 'customertypes', 'categories','temoignages'));
+
+        $guideData = [];
+
+        foreach ($products as $product) {
+            $categoryName = strtolower(trim($product->category->name ?? ''));
+
+            if (in_array($categoryName, ['logiciel', 'logiciels'])) {
+                $categoryKey = 'logiciel';
+            } elseif ($categoryName === 'formations & documentation') {
+                $categoryKey = 'formation';
+            } elseif ($categoryName === 'services & templates') {
+                $categoryKey = 'services';
+            } else {
+                continue;
+            }
+
+            foreach ($product->customerTypes as $customerType) {
+                $customerSlug = $customerType->slug;
+
+                if (!isset($guideData[$customerSlug])) {
+                    $guideData[$customerSlug] = [
+                        'logiciel' => [],
+                        'formation' => [],
+                        'services' => [],
+                    ];
+                }
+
+                $guideData[$customerSlug][$categoryKey][] = [
+                    'id' => $product->id,
+                    'title' => $product->name,
+                    'description' => $product->short_desc ?: $product->long_desc ?: 'Aucune description disponible.',
+                    'presentation' => $product->long_desc ?: 'Aucune présentation disponible.',
+                    'bullets' => $product->features->pluck('title')->take(4)->values()->toArray(),
+                ];
+            }
+        }
+        return view('frontend.index', compact(
+            'products',
+            'customertypes',
+            'categories',
+            'temoignages',
+            'guideData'
+        ));
     }
 
-    // public function details(Product $product)
-    // {
-    //     $product->load(['features', 'documentations', 'category']);
-
-    //     return response()->json([
-    //         'id' => $product->id,
-    //         'name' => $product->name,
-    //         'short_desc' => $product->short_desc,
-    //         'long_desc' => $product->long_desc,
-    //         'price' => $product->price,
-    //         'features' => $product->features,
-    //         'docs' => $product->documentations,
-    //     ]);
-    // }
-
+   
     public function modal(Product $product)
     {
         $product->load(['category', 'features', 'documentations']);

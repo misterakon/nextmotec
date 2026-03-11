@@ -934,3 +934,149 @@
         }
     });
 </script>
+<script>
+    const guideData = @json($guideData);
+
+    let selectedGuideCustomerType = null;
+    let selectedGuideCustomerLabel = null;
+    let selectedGuideCategory = null;
+    let selectedGuideCategoryLabel = null;
+
+    function openGuideAchat() {
+        resetGuideModal();
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('guideAchatModal')).show();
+    }
+
+    function resetGuideModal() {
+        selectedGuideCustomerType = null;
+        selectedGuideCustomerLabel = null;
+        selectedGuideCategory = null;
+        selectedGuideCategoryLabel = null;
+
+        document.getElementById('guide-modal-title').textContent = 'Je suis…';
+
+        document.getElementById('guide-step-customer').classList.remove('d-none');
+        document.getElementById('guide-step-solution').classList.add('d-none');
+        document.getElementById('guide-step-results').classList.add('d-none');
+
+        document.getElementById('guide-btn-back').classList.add('d-none');
+        document.getElementById('guide-results').innerHTML = '';
+    }
+
+    function selectGuideCustomerType(customerSlug, customerLabel) {
+        selectedGuideCustomerType = customerSlug;
+        selectedGuideCustomerLabel = customerLabel;
+
+        document.getElementById('guide-modal-title').textContent = 'Je cherche une solution de…';
+
+        document.getElementById('guide-step-customer').classList.add('d-none');
+        document.getElementById('guide-step-solution').classList.remove('d-none');
+        document.getElementById('guide-step-results').classList.add('d-none');
+
+        document.getElementById('guide-btn-back').classList.remove('d-none');
+    }
+
+    function selectGuideCategory(categoryKey, categoryLabel) {
+        selectedGuideCategory = categoryKey;
+        selectedGuideCategoryLabel = categoryLabel;
+
+        const results =
+            guideData?.[selectedGuideCustomerType]?.[categoryKey] || [];
+
+        document.getElementById('guide-modal-title').textContent = 'Votre solution recommandée !';
+
+        document.getElementById('guide-step-customer').classList.add('d-none');
+        document.getElementById('guide-step-solution').classList.add('d-none');
+        document.getElementById('guide-step-results').classList.remove('d-none');
+
+        const container = document.getElementById('guide-results');
+
+        if (!results.length) {
+            container.innerHTML = `
+                <div class="guide-result-card">
+                    <div class="guide-result-title">Aucune recommandation disponible</div>
+                    <div class="guide-result-desc">
+                        Aucun produit n’est disponible pour le profil
+                        <strong>${escapeHtml(selectedGuideCustomerLabel || '')}</strong>
+                        dans la catégorie
+                        <strong>${escapeHtml(categoryLabel || '')}</strong>.
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = results.map(item => `
+            <div class="guide-result-card">
+                <div class="guide-result-title">${escapeHtml(item.title)}</div>
+                <div class="guide-result-desc">${escapeHtml(item.description)}</div>
+                <div class="guide-result-presentation">${escapeHtml(item.presentation)}</div>
+
+                ${
+                    item.bullets && item.bullets.length
+                        ? `
+                            <ul class="guide-result-list">
+                                ${item.bullets.map(b => `<li>${escapeHtml(b)}</li>`).join('')}
+                            </ul>
+                        `
+                        : ''
+                }
+
+                <button type="button"
+                        class="guide-result-btn"
+                        onclick="openGuideProductDetail(${item.id})">
+                    Voir les détails
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+    function backGuideStep() {
+        const customerStep = document.getElementById('guide-step-customer');
+        const solutionStep = document.getElementById('guide-step-solution');
+        const resultsStep = document.getElementById('guide-step-results');
+
+        if (!resultsStep.classList.contains('d-none')) {
+            document.getElementById('guide-modal-title').textContent = 'Je cherche une solution de…';
+            resultsStep.classList.add('d-none');
+            solutionStep.classList.remove('d-none');
+            return;
+        }
+
+        if (!solutionStep.classList.contains('d-none')) {
+            document.getElementById('guide-modal-title').textContent = 'Je suis…';
+            solutionStep.classList.add('d-none');
+            customerStep.classList.remove('d-none');
+            document.getElementById('guide-btn-back').classList.add('d-none');
+
+            selectedGuideCustomerType = null;
+            selectedGuideCustomerLabel = null;
+            selectedGuideCategory = null;
+            selectedGuideCategoryLabel = null;
+        }
+    }
+
+    function openGuideProductDetail(productId) {
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('guideAchatModal')).hide();
+
+        setTimeout(() => {
+            if (typeof open_form === 'function') {
+                open_form(productId);
+            }
+        }, 250);
+    }
+
+    function escapeHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str).replace(/[&<>"']/g, function (m) {
+            return {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            }[m];
+        });
+    }
+</script>

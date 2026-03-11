@@ -17,42 +17,43 @@
                 <p style="font-size:16px; color: #4d4d4d">Sélectionnez votre profil pour découvrir les outils et formations que nous avons conçus pour vous.</p>
             </div>
 
-              <div
+            <div
                 class="ed-2-courses-filter-navs flex flex-wrap justify-center gap-[10px] mb-[40px] pb-[30px] border-b border-[#002147]/15 mx-[200px] lg:mx-[100px] md:mx-[12px]
                     *:border *:border-edpurple *:rounded-[6px] *:py-[5px] *:px-[10px] *:text-edpurple *:font-medium *:text-[14px]">
 
-                <!-- Tous -->
                 <button class="hover:bg-edpurple hover:text-white active" data-filter="all">
                     Pour Tous
                 </button>
 
-                <!-- Customer types dynamiques -->
                 @foreach($customertypes as $type)
                     <button
                         class="hover:bg-edpurple hover:text-white"
                         data-filter=".{{ $type->slug }}">
-                        {{ "Pour " . ucfirst($type->name) }}
+                        {{ 'Pour ' . ucfirst($type->name) }}
                     </button>
                 @endforeach
             </div>
+
             <div class="ed-2-courses-container">
                 <div class="flex flex-col gap-[48px]">
                     @foreach($categories as $category)
 
-                        {{-- CATEGORIE --}}
-                        <div id="{{ $category->slug }}" class="max-w-[370px] md:max-w-full shrink-0" >
-                            <h4 class="ed-section-sub-title fw-bold" style="color:#000">{{ $categoryTitles[strtolower($category->name)] ?? ucfirst($category->name) }}</h4>
+                        <div id="{{ $category->slug }}" class="max-w-[370px] md:max-w-full shrink-0">
+                            <h4 class="ed-section-sub-title fw-bold" style="color:#000">
+                                {{ $categoryTitles[strtolower($category->name)] ?? ucfirst($category->name) }}
+                            </h4>
                         </div>
 
-                        <!-- GRID CARDS PRODUCTS -->
                         <div class="ed-2-courses-container grid grid-cols-3 xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-[30px] xxl:gap-[20px] {{ !$loop->last ? 'mb-[2]' : '' }}" id="MixItUp084454">
-                            
+
                             @foreach($category->products as $product)
+                                @php
+                                    $customerTypeClasses = $product->customerTypes->pluck('slug')->implode(' ');
+                                    $minPrice = $product->subscriptionTypes->min('price');
+                                @endphp
 
-                                {{-- PRODUITS --}}
-                                <div class="ed-2-single-course mix {{ $product->customerType->slug }} border border-[#e5e5e5] rounded-[10px] p-[20px] group">
+                                <div class="ed-2-single-course mix {{ $customerTypeClasses }} border border-[#e5e5e5] rounded-[10px] p-[20px] group">
 
-                                    <!-- image -->
                                     <div class="relative overflow-hidden rounded-[10px] mb-[24px]">
                                         <img src="{{ $product->image
                                             ? asset('storage/app/public/'.$product->image)
@@ -61,36 +62,23 @@
                                             class="aspect-[330/223] w-full object-cover group-hover:scale-110">
                                     </div>
 
-                                    <!-- infos -->
                                     <div class="flex justify-between items-center mb-[16px]">
                                         <span class="inline-flex items-center justify-center border border-[#e5e5e5]
                                                     px-[10px] h-[33px] rounded-[6px] font-medium text-[#808080] text-[14px]">
                                             {{ ucfirst($category->name) }}
                                         </span>
 
-                                        {{-- <span class="text-edpurple font-semibold text-[20px] fw-bold" style="color:#1a474a">
-                                            {{ $product->price > 0
-                                                ? number_format($product->price, 0, ',', ' ') . ' FCFA'
-                                                : 'Sur devis' }}
-                                        </span> --}}
-                                        @php
-                                        $minPrice = $product->subscriptionTypes->min('price');
-                                        @endphp
-
                                         <span class="text-edpurple font-semibold text-[20px] fw-bold" style="color:#1a474a">
-                                        {{ $minPrice && $minPrice > 0
-                                            ? number_format($minPrice, 0, ',', ' ') . ' FCFA'
-                                            : 'Sur devis' }}
+                                            {{ $minPrice && $minPrice > 0
+                                                ? number_format($minPrice, 0, ',', ' ') . ' FCFA'
+                                                : 'Sur devis' }}
                                         </span>
-
                                     </div>
 
-                                    <!-- title -->
                                     <h5 class="font-semibold text-[20px] text-edblue mb-[23px]">
                                         {{ $product->name }}
                                     </h5>
 
-                                    <!-- footer -->
                                     <div class="border-t border-[#E5E5E5] pt-[24px] mt-[24px]">
                                         <button onclick="open_form({{ $product->id }})"
                                                 class="h-[50px] px-[22px] border border-edpurple rounded-[8px]
@@ -102,15 +90,12 @@
                                     </div>
 
                                 </div>
-
                             @endforeach
-                            
+
                         </div><br><br>
                     @endforeach
                 </div>
             </div>
-
-                    
             </div><br><br>
             {{-- @endforeach --}}
 
@@ -304,7 +289,7 @@
     <a href="https://wa.me/22501020304" target="_blank" class="float" title="Contactez-nous via WhatsApp">
         <i class="fa-brands fa-whatsapp fa-2x"></i>
     </a>
-
+    @include('frontend.modal_guide')
     @include('frontend.modal_description')
     @include('frontend.layout.script')
     @include('frontend.layout.cart')
