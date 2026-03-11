@@ -22,7 +22,7 @@
                 </li>
             @endforeach
             <li><a href="javascript:void(0)" onclick="openGuideAchat()"><b>GUIDE D'ACHAT</b></a></li>
-            <li><a href="#temoignages"><b>TEMOIGNAGES</b></a></li>
+            <li><a href="#temoignage"><b>TEMOIGNAGES</b></a></li>
             {{-- <li><a href="{{route('login')}}"><b>SE CONNECTER</b></a></li> --}}
             
             {{-- <li class="has-sub-menu relative">
