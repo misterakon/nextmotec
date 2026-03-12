@@ -160,7 +160,7 @@ class AdminController extends Controller
             ['id' => $id],
             [
                 'name'            => $request->libelle,
-                'customer_type_id'  => $request->type_client,
+                // 'customer_type_id'  => $request->type_client,
                 'category_id'    => $request->categorie,
                 //'price'            => $request->prix,
                 'short_desc'      => $request->short_desc,
@@ -169,6 +169,12 @@ class AdminController extends Controller
                 'image'           => $imagePath,
             ]
         );
+
+        /* Type client*/
+        //On supprime ici, on cree, on met a jour les types categories 
+        if ($request->filled('type_client')) {
+            $produit->customerTypes()->sync($request->type_client ?? []);
+        }
 
         /* Fonctionnalités */
         //On supprime ici les fonctionnalités du produit en mode mise à jour
@@ -296,7 +302,7 @@ class AdminController extends Controller
 
     public function get_produit($id)
     {
-        $produit = Product::with(['features', 'documentations', 'subscriptionTypes', 'category'])->findOrFail($id);
+        $produit = Product::with(['customerTypes', 'features', 'documentations', 'subscriptionTypes', 'category'])->findOrFail($id);
 
         if ($produit) {
             return response()->json($produit);

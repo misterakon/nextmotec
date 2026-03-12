@@ -112,7 +112,7 @@
         $('[name="presentation"]').val(data.long_desc);
         $('[name="statut"]').val(data.active == true ? 1 : 0);
 
-        $('[name="type_client"]').val(data.customer_type_id);
+        $('#select2Multiple').val(data.customer_types.map(t => t.id)).trigger('change');
         $('[name="categorie"]').val(data.category_id);
 
         if (data.image) {

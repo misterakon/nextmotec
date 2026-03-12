@@ -14,6 +14,17 @@
   <script src="{{ asset('public/backend/assets/js/main.js') }}"></script>
   <script src="{{ asset('public/backend/assets/js/ui-modals.js') }}"></script>
 
+      <!-- Vendors JS -->
+    <script src="{{ asset('public/backend/assets/vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('public/backend/assets/vendor/libs/tagify/tagify.js') }}"></script>
+    <script src="{{ asset('public/backend/assets/vendor/libs/bootstrap-select/bootstrap-select.js') }}"></script>
+    <script src="{{ asset('public/backend/assets/vendor/libs/typeahead-js/typeahead.js') }}"></script>
+    <script src="{{ asset('public/backend/assets/vendor/libs/bloodhound/bloodhound.js') }}"></script>
+    
+  <script src="{{ asset('public/backend/assets/js/forms-selects.js') }}"></script>
+    <script src="{{ asset('public/backend/assets/js/forms-tagify.js') }}"></script>
+    <script src="{{ asset('public/backend/assets/js/forms-typeahead.js') }}"></script>
+
   <!-- sweetalert js-->
   <script src="{{ asset('public/backend/assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
   <script src="{{ asset('public/backend/assets/js/extended-ui-sweetalert2.js') }}"></script>

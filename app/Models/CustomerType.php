@@ -14,6 +14,6 @@ class CustomerType extends Model
     // }
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'customer_type_product');
+        return $this->belongsToMany(Product::class, 'customer_type_product', 'customer_type_id', 'product_id');
     }
 }

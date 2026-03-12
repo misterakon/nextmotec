@@ -15,7 +15,7 @@
                         <div class="col-md-6 mb-4">
                             <label for="exampleFormControlSelect1" class="form-label fw-bold">Type client <span
                                     class="text-danger fw-bold">*</span></label>
-                            <select class="form-select" name="type_client" id="exampleFormControlSelect1" required>
+                            <select id="select2Multiple" name="type_client[]" class="select2 form-select" required multiple>
                                 <option selected>Selectionner une valeur</option>
                                 @if (!$type_client->isEmpty())
                                     @foreach ($type_client as $d)

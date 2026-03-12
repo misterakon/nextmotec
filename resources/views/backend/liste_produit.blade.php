@@ -31,7 +31,7 @@
                 <th>CATEGORIE</th>
                 <th>PRESENTATION</th>
                 <th>STATUT</th>
-                <th class="text-center" style="width:10%;">ACTIONS</th>
+                <th class="text-center" style="width:15%;">ACTIONS</th>
               </tr>
             </thead>
             <tbody>

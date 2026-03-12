@@ -8,7 +8,7 @@ class Product extends Model
 {
     protected $fillable = [
         'category_id',
-        'customer_type_id',
+        // 'customer_type_id',
         'name',
         'description',
         'price',
@@ -35,7 +35,7 @@ class Product extends Model
 
     public function customerTypes()
     {
-        return $this->belongsToMany(CustomerType::class, 'customer_type_product');
+        return $this->belongsToMany(CustomerType::class, 'customer_type_product', 'product_id', 'customer_type_id');
     }
 
     public function orderItems()
